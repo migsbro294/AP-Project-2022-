@@ -5,63 +5,81 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "Complaint")
+@Table(name = "complaint")
 public class Complaint {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "complaintNumber")
-    private String complaintNumber;
+    @Column(name = "Complaint_id")
+    private String Complaint_id;
 
-    @Column(name = "categorie")
-    private String categorie;
+    @Column(name = "Customer_id")
+    private String Customer_id;
 
-    @Column(name = "complaint")
-    private String complaint;
+    @Column(name = "Catergory")
+    private String Catergory;
 
-    @Column(name = "response")
-    private String response;
+    @Column(name = "Details")
+    private String Details;
+
+    @Column(name = "Employee_id")
+    private String Employee_id;
+
+    @Column(name = "Status")
+    private String Status;
 
     @Column(name = "date")
     private Date date;
 
-    @Column(name = "custID")
-    private String custID;
+    @Column(name = "Instructions")
+    private String Instructions;
 
-    @Column(name = "staffID")
-    private String staffID;
-
-
-    public String getComplaintNumber() {
-        return complaintNumber;
+    public String getComplaint_id() {
+        return Complaint_id;
     }
 
-    public void setComplaintNumber(String complaintNumber) {
-        this.complaintNumber = complaintNumber;
+    public void setComplaint_id(String complaint_id) {
+        Complaint_id = complaint_id;
     }
 
-    public String getCategorie() {
-        return categorie;
+    public String getCustomer_id() {
+        return Customer_id;
     }
 
-    public void setCategorie(String categorie) {
-        this.categorie = categorie;
+    public void setCustomer_id(String customer_id) {
+        Customer_id = customer_id;
     }
 
-    public String getComplaint() {
-        return complaint;
+    public String getCatergory() {
+        return Catergory;
     }
 
-    public void setComplaint(String complaint) {
-        this.complaint = complaint;
+    public void setCatergory(String catergory) {
+        Catergory = catergory;
     }
 
-    public String getResponse() {
-        return response;
+    public String getDetails() {
+        return Details;
     }
 
-    public void setResponse(String response) {
-        this.response = response;
+    public void setDetails(String details) {
+        Details = details;
+    }
+
+    public String getEmployee_id() {
+        return Employee_id;
+    }
+
+    public void setEmployee_id(String employee_id) {
+        Employee_id = employee_id;
+    }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
     }
 
     public Date getDate() {
@@ -72,32 +90,25 @@ public class Complaint {
         this.date = date;
     }
 
-    public String getCustID() {
-        return custID;
+    public String getInstructions() {
+        return Instructions;
     }
 
-    public void setCustID(String custID) {
-        this.custID = custID;
-    }
-
-    public String getStaffID() {
-        return staffID;
-    }
-
-    public void setStaffID(String staffID) {
-        this.staffID = staffID;
+    public void setInstructions(String instructions) {
+        Instructions = instructions;
     }
 
     @Override
     public String toString() {
         return "Complaint{" +
-                "complaintNumber='" + complaintNumber + '\'' +
-                ", categorie='" + categorie + '\'' +
-                ", complaint='" + complaint + '\'' +
-                ", response='" + response + '\'' +
+                "Complaint_id='" + Complaint_id + '\'' +
+                ", Customer_id='" + Customer_id + '\'' +
+                ", Catergory='" + Catergory + '\'' +
+                ", Details='" + Details + '\'' +
+                ", Employee_id='" + Employee_id + '\'' +
+                ", Status='" + Status + '\'' +
                 ", date=" + date +
-                ", custID='" + custID + '\'' +
-                ", staffID='" + staffID + '\'' +
+                ", Instructions='" + Instructions + '\'' +
                 '}';
     }
 }

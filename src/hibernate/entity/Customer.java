@@ -2,44 +2,44 @@ package hibernate.entity;
 
 
 import javax.persistence.*;
-import java.util.Date;
+import java.io.Serializable;
+
 
 @Entity
-@Table (name = "Customer")
-public class Customer {
+@Table (name = "customer")
+public class Customer implements Serializable {
+
+    // private static final long serialVersionUID = 84344L;
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "custID")
-    private String custID;
+    @Column(name = "Customer_Id")
+    private String Customer_Id;
 
-    @Column(name = "firstName")
-    private String firstName;
-
-    @Column(name = "lastname")
+    @Column(name = "Lastname")
     private String lastname;
 
-    @Column(name = "email")
+    @Column(name = "Firstname")
+    private String firstName;
+
+    @Column(name = "Email")
     private String email;
 
-    @Column(name = "contactNumber")
-    private Double contactNumber;
+    @Column(name = "Contact_num")
+    private int contactNumber;
 
-    @Column(name = "address")
+    @Column(name = "Address")
     private String address;
 
-    @Column(name = "balance")
-    private Double balance;
-
-    @Column(name = "date")
-    private Date date;
 
 
-    public String getCustID() {
-        return custID;
+
+    public String getCustomer_Id() {
+        return Customer_Id;
     }
 
-    public void setId(String custID) {
-        this.custID = custID;
+    public void setCustomer_Id(String Customer_Id) {
+        this.Customer_Id = Customer_Id;
     }
 
     public String getFirstName() {
@@ -66,11 +66,11 @@ public class Customer {
         this.email = email;
     }
 
-    public Double getContactNumber() {
+    public int getContactNumber() {
         return contactNumber;
     }
 
-    public void setContactNumber(Double contactNumber) {
+    public void setContactNumber(int contactNumber) {
         this.contactNumber = contactNumber;
     }
 
@@ -82,33 +82,16 @@ public class Customer {
         this.address = address;
     }
 
-    public Double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(Double balance) {
-        this.balance = balance;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
 
     @Override
     public String toString() {
         return "Customer{" +
-                "custID='" + custID + '\'' +
+                "Customer_Id='" + Customer_Id + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", email='" + email + '\'' +
                 ", contactNumber=" + contactNumber +
-                ", address='" + address + '\'' +
-                ", balance=" + balance +
-                ", date=" + date +
+                ", address='" + address +
                 '}';
     }
 }
