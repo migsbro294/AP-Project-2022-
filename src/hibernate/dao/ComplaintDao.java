@@ -7,6 +7,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import javax.persistence.Query;
+
+import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +39,12 @@ public class ComplaintDao {
             session.getTransaction().commit();
             session.close();
             sessionFactory.close();
-        } catch (Exception e) {
+        } catch (SQLDataException e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}catch (Exception e) {
+			System.err.println(e.getMessage());
+			logger.error(e.getMessage());
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -48,15 +55,27 @@ public class ComplaintDao {
 
     public List<Complaint> readComplaint(){
         List<Complaint> complaintList = new ArrayList<>();
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        complaintList = (List<Complaint>) session.createQuery ("FROM Complaint").getResultList();
-
-//        for(Complaint complaint : complaintList) {
-//        }
-        session.getTransaction().commit();
-        sessionFactory.close();
+        try {
+	        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	        Session session = sessionFactory.openSession();
+	        session.beginTransaction();
+	        complaintList = (List<Complaint>) session.createQuery ("FROM Complaint").getResultList();
+	
+	//        for(Complaint complaint : complaintList) {
+	//        }
+	        session.getTransaction().commit();
+	        sessionFactory.close();
+        }catch (SQLDataException e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}catch (Exception e) {
+			System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
         return complaintList;
 
     }
@@ -81,40 +100,55 @@ public class ComplaintDao {
             }
             // commit transaction
             transaction.commit();
-        } catch (Exception e) {
+        } catch (SQLDataException e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}catch (Exception e) {
+        	System.err.println(e.getMessage());
+			logger.error(e.getMessage());
             if (transaction != null) {
                 transaction.rollback();
             }
             e.printStackTrace();
         }
+        
         return complaint;
     }
 
     public void updateComplaint(String Complaint_id, String Customer_id, String Catergory, String Details, String Employee_id, String Status, Date date,String Instructions ){
-
-        //Create session factory object
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        //getting session object from session factory
-        Session session = sessionFactory.openSession();
-        //getting transaction object from session object
-        session.beginTransaction();
-
-        Complaint complaint1 = (Complaint) session.get(Complaint.class, Complaint_id);
-        complaint1.setCustomer_id(Customer_id);
-        complaint1.setCatergory(Catergory);
-        complaint1.setDetails(Details);
-        complaint1.setEmployee_id(Employee_id);
-        complaint1.setStatus(Status);
-        complaint1.setDate(date);
-        complaint1.setInstructions(Instructions);
-        session.update(complaint1);
-        System.out.println("Updated Successfully");
-        session.getTransaction().commit();
-        sessionFactory.close();
+    	try {
+	        //Create session factory object
+	        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	        //getting session object from session factory
+	        Session session = sessionFactory.openSession();
+	        //getting transaction object from session object
+	        session.beginTransaction();
+	
+	        Complaint complaint1 = (Complaint) session.get(Complaint.class, Complaint_id);
+	        complaint1.setCustomer_id(Customer_id);
+	        complaint1.setCatergory(Catergory);
+	        complaint1.setDetails(Details);
+	        complaint1.setEmployee_id(Employee_id);
+	        complaint1.setStatus(Status);
+	        complaint1.setDate(date);
+	        complaint1.setInstructions(Instructions);
+	        session.update(complaint1);
+	        System.out.println("Updated Successfully");
+	        session.getTransaction().commit();
+	        sessionFactory.close();
+		}
+    	catch (SQLDataException e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}
+    	catch (Exception e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}
     }
 
     public void deleteComplaint(String  Complaint_id){
-
+    	try {
         //Create session factory object
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         //getting session object from session factory
@@ -126,6 +160,15 @@ public class ComplaintDao {
         System.out.println("Deleted Successfully");
         session.getTransaction().commit();
         sessionFactory.close();
+    	}
+    	catch (SQLDataException e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}
+    	catch (Exception e) {
+        	System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}
     }
 
 }

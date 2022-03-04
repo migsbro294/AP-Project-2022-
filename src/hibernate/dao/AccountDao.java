@@ -2,17 +2,22 @@ package hibernate.dao;
 
 import hibernate.entity.Account;
 import hibernate.utility.HibernateUtil;
+import persistence_RAF.Actions;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import javax.persistence.Query;
+
+import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 public class AccountDao {
-
+	private static final Logger logger = LogManager.getLogger(AccountDao.class);
     public void createAccount(int Account_num,String Customer_id,String Status,Date  Payment_date, double Balance, double Amount  ) {
         Transaction transaction = null;
         try  {
@@ -37,6 +42,8 @@ public class AccountDao {
             session.close();
             sessionFactory.close();
         } catch (Exception e) {
+        	System.err.println(e.getMessage());
+			logger.error(e.getMessage());
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -47,15 +54,25 @@ public class AccountDao {
 
     public List<Account> readAccount(){
         List<Account> accountList = new ArrayList<>();
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        accountList = (List<Account>) session.createQuery ("FROM Account").getResultList();
-
-//        for(Account account : accountList) {
-//        }
-        session.getTransaction().commit();
-        sessionFactory.close();
+        try  {
+	        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	        Session session = sessionFactory.openSession();
+	        session.beginTransaction();
+	        accountList = (List<Account>) session.createQuery ("FROM Account").getResultList();
+	
+	//        for(Account account : accountList) {
+	//        }
+	        session.getTransaction().commit();
+	        sessionFactory.close();
+        }
+        catch (SQLDataException e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}
+        catch (Exception e) {
+        	System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}
         return accountList;
 
     }
@@ -80,7 +97,13 @@ public class AccountDao {
             }
             // commit transaction
             transaction.commit();
-        } catch (Exception e) {
+        } 
+        catch (SQLDataException e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}catch (Exception e) {
+        	System.err.println(e.getMessage());
+			logger.error(e.getMessage());
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -90,7 +113,7 @@ public class AccountDao {
     }
 
     public void updateComplaint(int Account_num,String Customer_id,String Status,Date  Payment_date, double Balance, double Amount  ){
-
+    	try {
         //Create session factory object
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         //getting session object from session factory
@@ -107,10 +130,19 @@ public class AccountDao {
         System.out.println("Updated Successfully");
         session.getTransaction().commit();
         sessionFactory.close();
+    	}
+    	catch (SQLDataException e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}
+    	catch (Exception e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}
     }
 
     public void deleteComplaint(int  Account_num){
-
+    	try {
         //Create session factory object
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         //getting session object from session factory
@@ -122,6 +154,15 @@ public class AccountDao {
         System.out.println("Deleted Successfully");
         session.getTransaction().commit();
         sessionFactory.close();
+    	}
+    	catch (SQLDataException e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}
+    	catch (Exception e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}
     }
 
 }

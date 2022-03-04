@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 
 import javax.persistence.Query;
 import java.io.Serializable;
+import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,12 @@ public class CustomerDao {
             session.getTransaction().commit();
             session.close();
             sessionFactory.close();
-        } catch (Exception e) {
+        } catch (SQLDataException e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}catch (Exception e) {
+        	System.err.println(e.getMessage());
+			logger.error(e.getMessage());
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -48,6 +54,7 @@ public class CustomerDao {
 
 
     public List<Customer> readCustomer(){
+    	try {
         List<Customer> customerList = new ArrayList<>();
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
@@ -59,6 +66,18 @@ public class CustomerDao {
 
         session.getTransaction().commit();
         sessionFactory.close();
+    	}
+    	catch (SQLDataException e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}catch (Exception e) {
+        	System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
         return customerList;
 
     }
@@ -83,7 +102,12 @@ public class CustomerDao {
             }
             // commit transaction
             transaction.commit();
-        } catch (Exception e) {
+        } catch (SQLDataException e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}catch (Exception e) {
+        	System.err.println(e.getMessage());
+			logger.error(e.getMessage());
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -93,28 +117,40 @@ public class CustomerDao {
     }
 
     public void updateCustomer(String Customer_Id, String Lastname,String Firstname, String Email,int Contact_num, String Address){
-
-        //Create session factory object
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        //getting session object from session factory
-        Session session = sessionFactory.openSession();
-        //getting transaction object from session object
-        session.beginTransaction();
-
-        Customer customer = (Customer) session.get(Customer.class, Customer_Id);
-        customer.setLastname(Lastname);
-        customer.setFirstName(Firstname);
-        customer.setContactNumber(Contact_num);
-        customer.setAddress(Address);
-        customer.setEmail(Email);
-        session.update(customer);
-        System.out.println("Updated Successfully");
-        session.getTransaction().commit();
-        sessionFactory.close();
+    	try {
+	        //Create session factory object
+	        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	        //getting session object from session factory
+	        Session session = sessionFactory.openSession();
+	        //getting transaction object from session object
+	        session.beginTransaction();
+	
+	        Customer customer = (Customer) session.get(Customer.class, Customer_Id);
+	        customer.setLastname(Lastname);
+	        customer.setFirstName(Firstname);
+	        customer.setContactNumber(Contact_num);
+	        customer.setAddress(Address);
+	        customer.setEmail(Email);
+	        session.update(customer);
+	        System.out.println("Updated Successfully");
+	        session.getTransaction().commit();
+	        sessionFactory.close();
+    	}
+    	catch (SQLDataException e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}catch (Exception e) {
+			System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
     }
 
     public void deleteCustomer(String Customer_Id){
-
+    	try {
         //Create session factory object
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         //getting session object from session factory
@@ -126,6 +162,18 @@ public class CustomerDao {
         System.out.println("Deleted Successfully");
         session.getTransaction().commit();
         sessionFactory.close();
+    	}
+    	catch (SQLDataException e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}catch (Exception e) {
+        	System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
     }
 
 

@@ -7,6 +7,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import javax.persistence.Query;
+
+import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +39,12 @@ public class EmployeeDao {
             session.getTransaction().commit();
             session.close();
             sessionFactory.close();
-        } catch (Exception e) {
+        } catch (SQLDataException e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}catch (Exception e) {
+			System.err.println(e.getMessage());
+			logger.error(e.getMessage());
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -48,19 +55,31 @@ public class EmployeeDao {
 
     public List<Employee> readEmployee(){
         List<Employee> employeeList = new ArrayList<>();
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        employeeList= (List<Employee>) session.createQuery ("FROM Employee").getResultList();
-
-//       for(Employee employee : employeeList) {
-//           System.out.println("id "+employee.getEmployee_id()+"  fname  "+employee.getFirstName()+
-//                   "  lname  "+employee.getLastName()+"  phone  "+employee.getContact_num()+"  role  "+
-//                   employee.getRole()+"   email  "+employee.getEmail());
-//        }
-
-        session.getTransaction().commit();
-        session.close();
+        try {
+	        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	        Session session = sessionFactory.openSession();
+	        session.beginTransaction();
+	        employeeList= (List<Employee>) session.createQuery ("FROM Employee").getResultList();
+	
+	//       for(Employee employee : employeeList) {
+	//           System.out.println("id "+employee.getEmployee_id()+"  fname  "+employee.getFirstName()+
+	//                   "  lname  "+employee.getLastName()+"  phone  "+employee.getContact_num()+"  role  "+
+	//                   employee.getRole()+"   email  "+employee.getEmail());
+	//        }
+	
+	        session.getTransaction().commit();
+	        session.close();
+        }catch (SQLDataException e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}catch (Exception e) {
+			System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
         return employeeList;
 
     }
@@ -85,7 +104,12 @@ public class EmployeeDao {
             }
             // commit transaction
             transaction.commit();
-        } catch (Exception e) {
+        } catch (SQLDataException e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}catch (Exception e) {
+			System.err.println(e.getMessage());
+			logger.error(e.getMessage());
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -95,28 +119,39 @@ public class EmployeeDao {
     }
 
     public void updateEmployee(String Employee_id,String Firstname, String Lastname,int Contact_num,String Role,String Email ){
-
-        //Create session factory object
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        //getting session object from session factory
-        Session session = sessionFactory.openSession();
-        //getting transaction object from session object
-        session.beginTransaction();
-
-        Employee employee = (Employee) session.get(Employee.class, Employee_id);
-        employee.setFirstName(Firstname);
-        employee.setLastName(Lastname);
-        employee.setContact_num(Contact_num);
-        employee.setRole(Role);
-        employee.setEmail(Email);
-        session.update(employee);
-        System.out.println("Updated Successfully");
-        session.getTransaction().commit();
-        sessionFactory.close();
+    	try {
+	        //Create session factory object
+	        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	        //getting session object from session factory
+	        Session session = sessionFactory.openSession();
+	        //getting transaction object from session object
+	        session.beginTransaction();
+	
+	        Employee employee = (Employee) session.get(Employee.class, Employee_id);
+	        employee.setFirstName(Firstname);
+	        employee.setLastName(Lastname);
+	        employee.setContact_num(Contact_num);
+	        employee.setRole(Role);
+	        employee.setEmail(Email);
+	        session.update(employee);
+	        System.out.println("Updated Successfully");
+	        session.getTransaction().commit();
+	        sessionFactory.close();
+    	}catch (SQLDataException e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}catch (Exception e) {
+			System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
     }
 
     public void deleteEmployee(String Employee_id){
-
+    	try {
         //Create session factory object
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         //getting session object from session factory
@@ -128,7 +163,16 @@ public class EmployeeDao {
         System.out.println("Deleted Successfully");
         session.getTransaction().commit();
         session.close();
+    	}catch (SQLDataException e) {
+    		System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+		}catch (Exception e) {
+			System.err.println(e.getMessage());
+			logger.error(e.getMessage());
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
     }
-
-
 }
