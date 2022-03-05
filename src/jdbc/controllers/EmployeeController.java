@@ -4,10 +4,12 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import db.connection.*;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 public class EmployeeController {
 	private Connection dbConn;
-	
+	private static final Logger logger = LogManager.getLogger(EmployeeController.class);
 	public EmployeeController() {
 		dbConn = DBConnector.getConnection();
 		
@@ -15,6 +17,7 @@ public class EmployeeController {
 	
 	public boolean createEmployee(String employee_id, String firstname, String lastname, int contact_num, String role, String email) {
 		int check=0;
+		logger.info("Creating Employee");
 		try {
 			PreparedStatement preSta = dbConn.prepareStatement("INSERT INTO employee VALUES (?,?,?,?,?,?)");
 			preSta.setObject(1, employee_id);
@@ -25,6 +28,7 @@ public class EmployeeController {
 			preSta.setObject(6, email);
 			check= preSta.executeUpdate();
 		} catch (SQLException e) {
+			logger.error("Error creating employee"+e.getMessage());
 			e.printStackTrace();
 		}
 		if(check==1){
@@ -35,6 +39,7 @@ public class EmployeeController {
 	}
 	public ArrayList<hibernate.entity.Employee> selectEmployee(String eId) {
 		ArrayList<hibernate.entity.Employee> employees = new ArrayList<hibernate.entity.Employee>();
+		logger.info("Selecting Employee");
 		try {
 			final String QUERY = "SELECT * FROM employee WHERE Employee_id = "+eId;
 			Statement stmt = dbConn.createStatement();
@@ -50,7 +55,7 @@ public class EmployeeController {
 			}
 			rs.close();
 		} catch (SQLException e) {
-			
+			logger.error("Error setting employee"+e.getMessage());
 			e.printStackTrace();
 		}
 		return employees;
@@ -58,6 +63,7 @@ public class EmployeeController {
 	public boolean updateEmployee(String eId,String firstname, String lastname, int contact_num, String role, String email) {
 		PreparedStatement updateSql;
 		int check=0;
+		logger.info("Update Employee");
 		try {
 			updateSql = dbConn.prepareStatement("UPDATE employee SET Employee_id=?,Firstname=?,Lastname=?, Contact_num=?,Role=?, Email=? where Employee_id="+eId);
 			updateSql.setObject(1, email);
@@ -68,7 +74,7 @@ public class EmployeeController {
 			updateSql.setObject(6, email);
 			check=updateSql.executeUpdate();
 		} catch (SQLException e) {
-			
+			logger.error("Error updating employee"+e.getMessage());
 			e.printStackTrace();
 		}
 		if(check==1){
@@ -80,11 +86,12 @@ public class EmployeeController {
 	public boolean deleteEmployee(String eId) {
 		PreparedStatement deleteSql;
 		int check=0;
+		logger.info("Delete Employee");
 		try {
 			deleteSql = dbConn.prepareStatement("DELETE FROM employee WHERE Employee_id ="+eId);
 			check= deleteSql.executeUpdate();
 		} catch (SQLException e) {
-			
+			logger.error("Error deleting employee"+e.getMessage());
 			e.printStackTrace();
 		}
 		if(check==1){
@@ -96,6 +103,7 @@ public class EmployeeController {
 
 	public ArrayList<hibernate.entity.Employee> readALLEmployee() {
 		ArrayList<hibernate.entity.Employee> employees = new ArrayList<hibernate.entity.Employee>();
+		logger.info("ReadALL Employee");
 		try {
 			final String QUERY = "SELECT * FROM employee";
 			Statement stmt = dbConn.createStatement();
@@ -111,7 +119,7 @@ public class EmployeeController {
 			}
 			rs.close();
 		} catch (SQLException e) {
-
+			logger.error("Error reading employee"+e.getMessage());
 			e.printStackTrace();
 		}
 		return employees;
