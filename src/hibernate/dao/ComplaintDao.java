@@ -12,9 +12,11 @@ import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ComplaintDao {
-
+    private static final Logger logger = LogManager.getLogger(ComplaintDao.class);
     public void createComplaint(String Complaint_id, String Customer_id, String Catergory, String Details, String Employee_id, String Status, Date date,String Instructions ) {
         Transaction transaction = null;
         try  {
@@ -39,10 +41,7 @@ public class ComplaintDao {
             session.getTransaction().commit();
             session.close();
             sessionFactory.close();
-        } catch (SQLDataException e) {
-    		System.err.println(e.getMessage());
-			logger.error(e.getMessage());
-		}catch (Exception e) {
+        } catch (Exception e) {
 			System.err.println(e.getMessage());
 			logger.error(e.getMessage());
             if (transaction != null) {
@@ -55,6 +54,7 @@ public class ComplaintDao {
 
     public List<Complaint> readComplaint(){
         List<Complaint> complaintList = new ArrayList<>();
+        Transaction transaction = null;
         try {
 	        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	        Session session = sessionFactory.openSession();
@@ -65,10 +65,7 @@ public class ComplaintDao {
 	//        }
 	        session.getTransaction().commit();
 	        sessionFactory.close();
-        }catch (SQLDataException e) {
-    		System.err.println(e.getMessage());
-			logger.error(e.getMessage());
-		}catch (Exception e) {
+        } catch (Exception e) {
 			System.err.println(e.getMessage());
 			logger.error(e.getMessage());
             if (transaction != null) {
@@ -100,10 +97,7 @@ public class ComplaintDao {
             }
             // commit transaction
             transaction.commit();
-        } catch (SQLDataException e) {
-    		System.err.println(e.getMessage());
-			logger.error(e.getMessage());
-		}catch (Exception e) {
+        } catch (Exception e) {
         	System.err.println(e.getMessage());
 			logger.error(e.getMessage());
             if (transaction != null) {
@@ -136,12 +130,7 @@ public class ComplaintDao {
 	        System.out.println("Updated Successfully");
 	        session.getTransaction().commit();
 	        sessionFactory.close();
-		}
-    	catch (SQLDataException e) {
-    		System.err.println(e.getMessage());
-			logger.error(e.getMessage());
-		}
-    	catch (Exception e) {
+		} catch (Exception e) {
     		System.err.println(e.getMessage());
 			logger.error(e.getMessage());
 		}
@@ -160,12 +149,7 @@ public class ComplaintDao {
         System.out.println("Deleted Successfully");
         session.getTransaction().commit();
         sessionFactory.close();
-    	}
-    	catch (SQLDataException e) {
-    		System.err.println(e.getMessage());
-			logger.error(e.getMessage());
-		}
-    	catch (Exception e) {
+    	} catch (Exception e) {
         	System.err.println(e.getMessage());
 			logger.error(e.getMessage());
 		}

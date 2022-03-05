@@ -2,7 +2,6 @@ package hibernate.dao;
 
 import hibernate.entity.Account;
 import hibernate.utility.HibernateUtil;
-import persistence_RAF.Actions;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -64,12 +63,7 @@ public class AccountDao {
 	//        }
 	        session.getTransaction().commit();
 	        sessionFactory.close();
-        }
-        catch (SQLDataException e) {
-    		System.err.println(e.getMessage());
-			logger.error(e.getMessage());
-		}
-        catch (Exception e) {
+        } catch (Exception e) {
         	System.err.println(e.getMessage());
 			logger.error(e.getMessage());
 		}
@@ -97,11 +91,7 @@ public class AccountDao {
             }
             // commit transaction
             transaction.commit();
-        } 
-        catch (SQLDataException e) {
-    		System.err.println(e.getMessage());
-			logger.error(e.getMessage());
-		}catch (Exception e) {
+        } catch (Exception e) {
         	System.err.println(e.getMessage());
 			logger.error(e.getMessage());
             if (transaction != null) {
@@ -130,12 +120,7 @@ public class AccountDao {
         System.out.println("Updated Successfully");
         session.getTransaction().commit();
         sessionFactory.close();
-    	}
-    	catch (SQLDataException e) {
-    		System.err.println(e.getMessage());
-			logger.error(e.getMessage());
-		}
-    	catch (Exception e) {
+    	} catch (Exception e) {
     		System.err.println(e.getMessage());
 			logger.error(e.getMessage());
 		}
@@ -154,12 +139,7 @@ public class AccountDao {
         System.out.println("Deleted Successfully");
         session.getTransaction().commit();
         sessionFactory.close();
-    	}
-    	catch (SQLDataException e) {
-    		System.err.println(e.getMessage());
-			logger.error(e.getMessage());
-		}
-    	catch (Exception e) {
+    	} catch (Exception e) {
     		System.err.println(e.getMessage());
 			logger.error(e.getMessage());
 		}
