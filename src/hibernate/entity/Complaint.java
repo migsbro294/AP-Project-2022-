@@ -33,6 +33,11 @@ public class Complaint {
 
     @Column(name = "Instructions")
     private String Instructions;
+    public Complaint() {
+    }
+
+    public Complaint(String complaintID, String customerID, String category, String details, String employeeID, String status, java.sql.Date date, String instruction) {
+    }
 
     public String getComplaint_id() {
         return Complaint_id;
