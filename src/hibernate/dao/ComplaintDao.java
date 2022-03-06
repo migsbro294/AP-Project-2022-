@@ -109,8 +109,9 @@ public class ComplaintDao {
         return complaint;
     }
 
-    public void updateComplaint(String Complaint_id, String Customer_id, String Catergory, String Details, String Employee_id, String Status, Date date,String Instructions ){
-    	try {
+    public boolean updateComplaint(String Complaint_id, String Customer_id, String Catergory, String Details, String Employee_id, String Status, Date date,String Instructions ){
+        int check=0;
+        try {
 	        //Create session factory object
 	        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	        //getting session object from session factory
@@ -127,13 +128,18 @@ public class ComplaintDao {
 	        complaint1.setDate(date);
 	        complaint1.setInstructions(Instructions);
 	        session.update(complaint1);
-	        System.out.println("Updated Successfully");
+	        check=1;
 	        session.getTransaction().commit();
 	        sessionFactory.close();
 		} catch (Exception e) {
     		System.err.println(e.getMessage());
 			logger.error(e.getMessage());
 		}
+        if(check==1){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public void deleteComplaint(String  Complaint_id){

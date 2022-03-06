@@ -84,7 +84,7 @@ public class AccountController {
 			return false;
 		}
 	}
-	public boolean deleteAccount(String aNum) {
+	public boolean deleteAccount(int aNum) {
 		PreparedStatement deleteSql;
 		int check=0;
 		logger.info("Delete Account");

@@ -102,8 +102,9 @@ public class AccountDao {
         return account;
     }
 
-    public void updateComplaint(int Account_num,String Customer_id,String Status,Date  Payment_date, double Balance, double Amount  ){
-    	try {
+    public boolean updateAccount(int Account_num,String Customer_id,String Status,Date  Payment_date, double Balance, double Amount  ){
+    	int check=0;
+        try {
         //Create session factory object
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         //getting session object from session factory
@@ -117,13 +118,18 @@ public class AccountDao {
         account.setPayment_date(Payment_date);
         account.setBalance(Balance);
         account.setAmount(Amount);
-        System.out.println("Updated Successfully");
+        check=1;
         session.getTransaction().commit();
         sessionFactory.close();
     	} catch (Exception e) {
     		System.err.println(e.getMessage());
 			logger.error(e.getMessage());
 		}
+        if(check==1){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public void deleteComplaint(int  Account_num){

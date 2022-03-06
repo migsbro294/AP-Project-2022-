@@ -112,8 +112,8 @@ public class EmployeeDao {
         return employee;
     }
 
-    public void updateEmployee(String Employee_id,String Firstname, String Lastname,int Contact_num,String Role,String Email ){
-        Transaction transaction = null;
+    public boolean updateEmployee(String Employee_id,String Firstname, String Lastname,int Contact_num,String Role,String Email ){
+        Transaction transaction = null;int check=0;
         try {
 	        //Create session factory object
 	        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -129,7 +129,7 @@ public class EmployeeDao {
 	        employee.setRole(Role);
 	        employee.setEmail(Email);
 	        session.update(employee);
-	        System.out.println("Updated Successfully");
+            check=1;
 	        session.getTransaction().commit();
 	        sessionFactory.close();
     	} catch (Exception e) {
@@ -140,10 +140,15 @@ public class EmployeeDao {
             }
             e.printStackTrace();
         }
+        if(check==1){
+            return true;
+        }else{
+            return false;
+        }
     }
 
-    public void deleteEmployee(String Employee_id){
-        Transaction transaction = null;
+    public boolean deleteEmployee(String Employee_id){
+        Transaction transaction = null;int check=0;
     	try {
         //Create session factory object
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -153,7 +158,7 @@ public class EmployeeDao {
         session.beginTransaction();
         Employee employee = (Employee) session.load(Employee.class, Employee_id);
         session.delete(employee);
-        System.out.println("Deleted Successfully");
+        check=1;
         session.getTransaction().commit();
         session.close();
     	} catch (Exception e) {
@@ -163,6 +168,11 @@ public class EmployeeDao {
                 transaction.rollback();
             }
             e.printStackTrace();
+        }
+        if(check==1){
+            return true;
+        }else{
+            return false;
         }
     }
 }
