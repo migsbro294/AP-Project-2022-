@@ -31,8 +31,17 @@ public class Customer implements Serializable {
     @Column(name = "Address")
     private String address;
 
+    public Customer() {
+    }
 
-
+    public Customer(String customer_Id, String lastname, String firstName, String email, int contactNumber, String address) {
+        Customer_Id = customer_Id;
+        this.lastname = lastname;
+        this.firstName = firstName;
+        this.email = email;
+        this.contactNumber = contactNumber;
+        this.address = address;
+    }
 
     public String getCustomer_Id() {
         return Customer_Id;

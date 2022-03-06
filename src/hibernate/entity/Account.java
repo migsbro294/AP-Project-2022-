@@ -27,6 +27,11 @@ public class Account {
 
     @Column(name = "Amount")
     private double Amount;
+    public Account() {
+    }
+    public Account(int accountNum, String customerID, String status, java.sql.Date paymentDate, double balance, double amount) {
+    }
+
 
     public int getAccount_num() {
         return Account_num;

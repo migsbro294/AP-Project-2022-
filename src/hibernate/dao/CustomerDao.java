@@ -11,10 +11,12 @@ import java.io.Serializable;
 import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class CustomerDao {
 
-
+    private static final Logger logger = LogManager.getLogger(CustomerDao.class);
 
     public void createCustomer(String Customer_Id,String Lastname, String Firstname, String Email, int Contact_num, String Address  ) {
         Transaction transaction = null;
@@ -39,12 +41,9 @@ public class CustomerDao {
             session.getTransaction().commit();
             session.close();
             sessionFactory.close();
-        } catch (SQLDataException e) {
-    		System.err.println(e.getMessage());
-			logger.error(e.getMessage());
-		}catch (Exception e) {
-        	System.err.println(e.getMessage());
-			logger.error(e.getMessage());
+        } catch (Exception e) {
+        	System.err.println("Error creating "+e.getMessage());
+			logger.error("Error creating employee Record "+e.getMessage());
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -54,8 +53,9 @@ public class CustomerDao {
 
 
     public List<Customer> readCustomer(){
-    	try {
+        Transaction transaction = null;
         List<Customer> customerList = new ArrayList<>();
+    	try {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
@@ -66,13 +66,9 @@ public class CustomerDao {
 
         session.getTransaction().commit();
         sessionFactory.close();
-    	}
-    	catch (SQLDataException e) {
-    		System.err.println(e.getMessage());
-			logger.error(e.getMessage());
-		}catch (Exception e) {
+    	} catch (Exception e) {
         	System.err.println(e.getMessage());
-			logger.error(e.getMessage());
+			logger.error("Error reading employee Record "+e.getMessage());
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -102,12 +98,9 @@ public class CustomerDao {
             }
             // commit transaction
             transaction.commit();
-        } catch (SQLDataException e) {
-    		System.err.println(e.getMessage());
-			logger.error(e.getMessage());
-		}catch (Exception e) {
+        } catch (Exception e) {
         	System.err.println(e.getMessage());
-			logger.error(e.getMessage());
+			logger.error("Error getting employee Record "+e.getMessage());
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -117,7 +110,8 @@ public class CustomerDao {
     }
 
     public void updateCustomer(String Customer_Id, String Lastname,String Firstname, String Email,int Contact_num, String Address){
-    	try {
+        Transaction transaction = null;
+        try {
 	        //Create session factory object
 	        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	        //getting session object from session factory
@@ -135,13 +129,9 @@ public class CustomerDao {
 	        System.out.println("Updated Successfully");
 	        session.getTransaction().commit();
 	        sessionFactory.close();
-    	}
-    	catch (SQLDataException e) {
-    		System.err.println(e.getMessage());
-			logger.error(e.getMessage());
-		}catch (Exception e) {
-			System.err.println(e.getMessage());
-			logger.error(e.getMessage());
+    	} catch (Exception e) {
+			System.err.println("Error updating "+e.getMessage());
+			logger.error("Error updating employee Record "+e.getMessage());
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -150,7 +140,8 @@ public class CustomerDao {
     }
 
     public void deleteCustomer(String Customer_Id){
-    	try {
+        Transaction transaction = null;
+        try {
         //Create session factory object
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         //getting session object from session factory
@@ -162,13 +153,9 @@ public class CustomerDao {
         System.out.println("Deleted Successfully");
         session.getTransaction().commit();
         sessionFactory.close();
-    	}
-    	catch (SQLDataException e) {
-    		System.err.println(e.getMessage());
-			logger.error(e.getMessage());
-		}catch (Exception e) {
-        	System.err.println(e.getMessage());
-			logger.error(e.getMessage());
+    	} catch (Exception e) {
+        	System.err.println("Error Deleting "+e.getMessage());
+			logger.error("Error Deleting employee Record "+e.getMessage());
             if (transaction != null) {
                 transaction.rollback();
             }
