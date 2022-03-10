@@ -28,14 +28,18 @@ public class Handler extends Thread{
     private final Socket socket;
     private   ObjectOutputStream outputStream;
     private  ObjectInputStream inputStream;
-    CustomerController customerController;
-    EmployeeController employeeController;
-    ComplaintController complaintController;
-    AccountController accountController;
-    CustomerDao customerDao;
-    EmployeeDao employeeDao;
-    ComplaintDao complaintDao;
-    AccountDao accountDao;
+
+    CustomerController customerController = new CustomerController();
+    EmployeeController employeeController =new EmployeeController();
+    ComplaintController complaintController=new ComplaintController();
+    AccountController accountController = new AccountController();
+    CustomerDao customerDao =new CustomerDao();
+    EmployeeDao employeeDao = new EmployeeDao();
+    ComplaintDao complaintDao = new ComplaintDao();
+    AccountDao accountDao = new AccountDao();
+    CustomerPassword customerPassword = new CustomerPassword();
+    EmployeePassword employeePassword = new EmployeePassword();
+
 
     public Handler(Socket socket) throws IOException {
         this.socket = socket;
@@ -118,7 +122,57 @@ public class Handler extends Thread{
 
 
                 //both hibernate and JDBC used to get
+                if(options==Options.GET_EMPLOYEE){
+                    String employee_id = (String) inputStream.readObject();
+                    Employee get = employeeDao.getEmployee(employee_id);
+                    outputStream.writeObject(get);
+                    outputStream.flush();
+                }
 
+                if(options==Options.GET_COMPLAINT){
+                    String complaint_id = (String) inputStream.readObject();
+                    List get = complaintController.getComplaint(complaint_id);
+                    outputStream.writeObject(get);
+                    outputStream.flush();
+                }
+
+                if(options==Options.GET_CUSTOMER){
+                    String customer_ID = (String) inputStream.readObject();
+                    ArrayList<Customer> get = customerController.selectCustomer(customer_ID);
+                    outputStream.writeObject(get);
+                    outputStream.flush();
+                }
+
+
+
+                if(options == Options.CUSTOMER_LOGIN) {
+                    String id = (String) inputStream.readObject();
+                    String password = (String) inputStream.readObject();
+                    Boolean isValid = customerPassword.validate(id,password);
+                    outputStream.writeObject(isValid);
+                    outputStream.flush();
+                }
+                if(options == Options.CREATE_CUST_PASSWORD) {
+                    String id = (String) inputStream.readObject();
+                    String password = (String) inputStream.readObject();
+                    customerPassword.createPassword(id,password);
+                    outputStream.flush();
+                }
+
+                if(options == Options.EMPLOYEE_LOGIN) {
+                    String id = (String) inputStream.readObject();
+                    String password = (String) inputStream.readObject();
+                    Boolean isValid = employeePassword.validate(id,password);
+                    outputStream.writeObject(isValid);
+                    outputStream.flush();
+                }
+
+                if(options == Options.CREATE_EMPL_PASSWORD) {
+                    String id = (String) inputStream.readObject();
+                    String password = (String) inputStream.readObject();
+                    employeePassword.createPassword(id,password);
+                    outputStream.flush();
+                }
             }
         }catch (EOFException e) {
             System.out.println("EOFException : error performing client request on database "+ e.getMessage());

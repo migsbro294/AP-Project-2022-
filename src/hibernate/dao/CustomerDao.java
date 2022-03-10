@@ -34,11 +34,11 @@ public class CustomerDao {
             //getting session object from session factory
             Session session = sessionFactory.openSession();
             //getting transaction object from session object
-            session.beginTransaction();
+            transaction=session.beginTransaction();;
 
             session.save(customer);
             System.out.println("Inserted Successfully");
-            session.getTransaction().commit();
+            transaction.commit();
             session.close();
             sessionFactory.close();
         } catch (Exception e) {
@@ -58,14 +58,14 @@ public class CustomerDao {
     	try {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
-        session.beginTransaction();
+        transaction=session.beginTransaction();
         customerList = (List<Customer>) session.createQuery ("FROM Customer").getResultList();
 
 //        for(Customer customer : customerList) {
 //        }
-
-        session.getTransaction().commit();
-        sessionFactory.close();
+//
+         transaction.commit();
+        session.close();
     	} catch (Exception e) {
         	System.err.println(e.getMessage());
 			logger.error("Error reading employee Record "+e.getMessage());
@@ -98,6 +98,7 @@ public class CustomerDao {
             }
             // commit transaction
             transaction.commit();
+            session.close();
         } catch (Exception e) {
         	System.err.println(e.getMessage());
 			logger.error("Error getting employee Record "+e.getMessage());
@@ -117,7 +118,7 @@ public class CustomerDao {
 	        //getting session object from session factory
 	        Session session = sessionFactory.openSession();
 	        //getting transaction object from session object
-	        session.beginTransaction();
+            transaction=session.beginTransaction();
 	
 	        Customer customer = (Customer) session.get(Customer.class, Customer_Id);
 	        customer.setLastname(Lastname);
@@ -127,8 +128,8 @@ public class CustomerDao {
 	        customer.setEmail(Email);
 	        session.update(customer);
             check=1;
-	        session.getTransaction().commit();
-	        sessionFactory.close();
+            transaction.commit();
+            session.close();
     	} catch (Exception e) {
 			System.err.println("Error updating "+e.getMessage());
 			logger.error("Error updating employee Record "+e.getMessage());
@@ -152,13 +153,13 @@ public class CustomerDao {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         //getting session object from session factory
         Session session = sessionFactory.openSession();
-        //getting transaction object from session object
-        session.beginTransaction();
+        //getting transaction object from session objec
+        transaction=session.beginTransaction();
         Customer customer = (Customer) session.load(Customer.class, Customer_Id);
         session.delete(customer);
         check=1;
-        session.getTransaction().commit();
-        sessionFactory.close();
+        transaction.commit();
+        session.close();
     	} catch (Exception e) {
         	System.err.println("Error Deleting "+e.getMessage());
 			logger.error("Error Deleting employee Record "+e.getMessage());

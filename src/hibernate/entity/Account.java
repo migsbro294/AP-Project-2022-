@@ -9,7 +9,6 @@ import java.util.Date;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "Account_num")
     private int Account_num;
 

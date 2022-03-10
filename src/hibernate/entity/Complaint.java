@@ -9,7 +9,6 @@ import java.util.Date;
 public class Complaint {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "Complaint_id")
     private String Complaint_id;
 

@@ -1,11 +1,13 @@
 package jdbc.controllers;
 
 import db.connection.DBConnector;
+import hibernate.entity.Complaint;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ComplaintController {
     private Connection dbConn;
@@ -39,32 +41,34 @@ public class ComplaintController {
             return false;
         }
     }
-    public ArrayList<hibernate.entity.Complaint> selectComplaint(String cId) {
-        ArrayList<hibernate.entity.Complaint> complaints = new ArrayList<hibernate.entity.Complaint>();
-        logger.info("Selecting Complaint");
+    public List getComplaint(String id){
+        List complaints = new ArrayList();
+        logger.info("getting Complaint");
+        String sql = "SELECT * FROM complaint WHERE Customer_id = "+id;
         try {
-            final String QUERY = "SELECT * FROM complaint WHERE Complaint_id = "+cId;
-            Statement stmt = dbConn.createStatement();
-            ResultSet rs = stmt.executeQuery(QUERY);
-            while(rs.next()) {
-                String complaintID= rs.getString("Complaint_id");
-                String customerID= rs.getString("Customer_id");
-                String category= rs.getString("Category");
-                String details= rs.getString("Details");
-                String employeeID= rs.getString("Employee_id");
-                String status= rs.getString("Status");
-                Date date= rs.getDate("Date");
-                String instruction= rs.getString("Instruction");
+            Statement statement=dbConn.createStatement();
+            ResultSet resultSet=statement.executeQuery(sql);
+            while(resultSet.next()){
+                Complaint complain= new Complaint();
+                complain.setComplaint_id(resultSet.getString(1));
+                complain.setCustomer_id(resultSet.getString(2));
+                complain.setCatergory(resultSet.getString(3));
+                complain.setDetails(resultSet.getString(4));
+                complain.setEmployee_id(resultSet.getString(5));
+                complain.setStatus(resultSet.getString(6));
+                complain.setDate(resultSet.getDate(7));
+                complain.setInstructions(resultSet.getString(8));
 
-                complaints.add(new hibernate.entity.Complaint(complaintID,customerID,category,details,employeeID,status,date,instruction));
+                complaints.add(complain);
             }
-            rs.close();
+
         } catch (SQLException e) {
-            logger.error("Error setting complaint"+e.getMessage());
+            logger.error("Error getting complaint"+e.getMessage());
             e.printStackTrace();
         }
-        return complaints;
+        return  complaints;
     }
+
     public boolean updateComplaint(String complaintID, String customerID, String category, String Details, String employeeID, String Status, Date date, String instructions) {
         PreparedStatement updateSql;
         int check=0;
