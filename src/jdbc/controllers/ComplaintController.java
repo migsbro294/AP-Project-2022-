@@ -122,12 +122,12 @@ public class ComplaintController {
             while(rs.next()) {
                 String complaintID= rs.getString("Complaint_id");
                 String customerID= rs.getString("Customer_id");
-                String category= rs.getString("Category");
+                String category= rs.getString("Catergory");
                 String details= rs.getString("Details");
                 String employeeID= rs.getString("Employee_id");
                 String status= rs.getString("Status");
                 Date date= rs.getDate("Date");
-                String instruction= rs.getString("Instruction");
+                String instruction= rs.getString("Instructions");
 
                 complaints.add(new hibernate.entity.Complaint(complaintID,customerID,category,details,employeeID,status,date,instruction));
 

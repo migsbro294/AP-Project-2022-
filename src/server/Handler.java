@@ -9,10 +9,9 @@ import hibernate.entity.Account;
 import hibernate.entity.Complaint;
 import hibernate.entity.Customer;
 import hibernate.entity.Employee;
-import jdbc.controllers.AccountController;
-import jdbc.controllers.ComplaintController;
-import jdbc.controllers.CustomerController;
-import jdbc.controllers.EmployeeController;
+import jdbc.controllers.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -24,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Handler extends Thread{
+    private static final Logger logger = LogManager.getLogger(Handler.class);
 
     private final Socket socket;
     private   ObjectOutputStream outputStream;
@@ -43,11 +43,12 @@ public class Handler extends Thread{
 
     public Handler(Socket socket) throws IOException {
         this.socket = socket;
+        logger.info("configuring streams in handler ");
         try {
             this.outputStream=new ObjectOutputStream(socket.getOutputStream());
             this.inputStream=new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
-            System.err.println("Error configuring streams in client handler");
+            logger.error("IOException: Error configuring streams in handler: "+e.getMessage());
             e.printStackTrace();
         }
     }
@@ -56,6 +57,7 @@ public class Handler extends Thread{
     public void run() {
 
         try {
+            logger.info("Carrying client request");
             while(true){
                 Options options = (Options) inputStream.readObject();
 
@@ -118,6 +120,12 @@ public class Handler extends Thread{
 
 
                 //both hibernate and JDBC used to READ
+                if(options==Options.READ_ALL_COMPLAINT){
+                    List<Complaint> read = complaintController.readALLComplaint();
+                    outputStream.writeObject(read);
+                    outputStream.flush();
+                }
+
 
 
 
@@ -138,7 +146,7 @@ public class Handler extends Thread{
 
                 if(options==Options.GET_CUSTOMER){
                     String customer_ID = (String) inputStream.readObject();
-                    ArrayList<Customer> get = customerController.selectCustomer(customer_ID);
+                    Customer get = customerDao.getCustomer(customer_ID);
                     outputStream.writeObject(get);
                     outputStream.flush();
                 }
@@ -175,15 +183,19 @@ public class Handler extends Thread{
                 }
             }
         }catch (EOFException e) {
-            System.out.println("EOFException : error performing client request on database "+ e.getMessage());
+            logger.warn("EOFException : error performing client request on database "+ e.getMessage());
         }catch (Exception ex){
+            logger.error("Exception  Error:" + socket);
             System.out.println("Error:" + socket);
         }finally {
+            logger.info("Closing socket");
             try {
                 socket.close();
             } catch (IOException e) {
+                logger.error("IOException: Error closing socket: "+e.getMessage());
                 e.printStackTrace();
             }
+            logger.info("Socket is closed: " + socket);
             System.out.println("Closed: " + socket);
         }
     }
