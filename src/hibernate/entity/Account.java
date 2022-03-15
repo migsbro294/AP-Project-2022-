@@ -2,14 +2,14 @@ package hibernate.entity;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "account")
-public class Account {
+public class Account implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "Account_num")
     private int Account_num;
 

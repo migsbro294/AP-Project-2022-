@@ -2,6 +2,7 @@ package hibernate.entity;
 
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 
 
@@ -9,10 +10,10 @@ import java.io.Serializable;
 @Table (name = "customer")
 public class Customer implements Serializable {
 
-    // private static final long serialVersionUID = 84344L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "Customer_Id")
     private String Customer_Id;
 

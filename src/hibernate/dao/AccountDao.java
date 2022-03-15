@@ -19,6 +19,7 @@ public class AccountDao {
 	private static final Logger logger = LogManager.getLogger(AccountDao.class);
     public void createAccount(int Account_num,String Customer_id,String Status,Date  Payment_date, double Balance, double Amount  ) {
         Transaction transaction = null;
+        logger.info("Creating Account");
         try  {
             Account account = new Account();
             account.setAccount_num(Account_num);
@@ -33,13 +34,13 @@ public class AccountDao {
             //getting session object from session factory
             Session session = sessionFactory.openSession();
             //getting transaction object from session object
-            session.beginTransaction();
+            transaction=session.beginTransaction();
 
             session.save(account);
             System.out.println("Inserted Successfully");
-            session.getTransaction().commit();
+            transaction.commit();
             session.close();
-            sessionFactory.close();
+
         } catch (Exception e) {
         	System.err.println(e.getMessage());
 			logger.error(e.getMessage());
@@ -53,19 +54,23 @@ public class AccountDao {
 
     public List<Account> readAccount(){
         List<Account> accountList = new ArrayList<>();
+        Transaction transaction = null;
+        logger.info("Reading all account");
         try  {
 	        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	        Session session = sessionFactory.openSession();
-	        session.beginTransaction();
+            transaction=session.beginTransaction();
 	        accountList = (List<Account>) session.createQuery ("FROM Account").getResultList();
-	
-	//        for(Account account : accountList) {
-	//        }
-	        session.getTransaction().commit();
-	        sessionFactory.close();
+
+
+            transaction.commit();
+	        session.close();
         } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
         	System.err.println(e.getMessage());
-			logger.error(e.getMessage());
+			logger.error("Error reading all account: "+e.getMessage());
 		}
         return accountList;
 
@@ -77,6 +82,7 @@ public class AccountDao {
 
         Transaction transaction = null;
         Account account = null;
+        logger.info("Getting Account");
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             // start a transaction
             transaction = session.beginTransaction();
@@ -93,7 +99,7 @@ public class AccountDao {
             transaction.commit();
         } catch (Exception e) {
         	System.err.println(e.getMessage());
-			logger.error(e.getMessage());
+			logger.error("Error getting account: "+e.getMessage());
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -102,14 +108,17 @@ public class AccountDao {
         return account;
     }
 
-    public void updateComplaint(int Account_num,String Customer_id,String Status,Date  Payment_date, double Balance, double Amount  ){
-    	try {
+    public boolean updateAccount(int Account_num,String Customer_id,String Status,Date  Payment_date, double Balance, double Amount  ){
+    	int check=0;
+        Transaction transaction = null;
+        logger.info("updating Account: "+Account_num);
+        try {
         //Create session factory object
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         //getting session object from session factory
         Session session = sessionFactory.openSession();
         //getting transaction object from session object
-        session.beginTransaction();
+        transaction=session.beginTransaction();
 
         Account account = (Account) session.get(Account.class, Account_num);
         account.setCustomer_id(Customer_id);
@@ -117,31 +126,44 @@ public class AccountDao {
         account.setPayment_date(Payment_date);
         account.setBalance(Balance);
         account.setAmount(Amount);
-        System.out.println("Updated Successfully");
-        session.getTransaction().commit();
-        sessionFactory.close();
+        check=1;
+        transaction.commit();
+        session.close();
     	} catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
     		System.err.println(e.getMessage());
-			logger.error(e.getMessage());
+			logger.error("Error updating account"+e.getMessage());
 		}
+        if(check==1){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public void deleteComplaint(int  Account_num){
+        Transaction transaction = null;
+        logger.info("deleting account: "+Account_num);
     	try {
         //Create session factory object
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         //getting session object from session factory
         Session session = sessionFactory.openSession();
         //getting transaction object from session object
-        session.beginTransaction();
+        transaction=session.beginTransaction();
         Account account = (Account) session.load(Account.class, Account_num);
         session.delete(account);
         System.out.println("Deleted Successfully");
-        session.getTransaction().commit();
-        sessionFactory.close();
+        transaction.commit();
+        session.close();
     	} catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
     		System.err.println(e.getMessage());
-			logger.error(e.getMessage());
+			logger.error("Error deleting account "+e.getMessage());
 		}
     }
 

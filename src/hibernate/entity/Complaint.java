@@ -2,14 +2,18 @@ package hibernate.entity;
 
 
 import javax.persistence.*;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "complaint")
-public class Complaint {
+public class Complaint implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "Complaint_id")
     private String Complaint_id;
 

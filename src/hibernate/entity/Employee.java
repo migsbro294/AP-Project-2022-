@@ -3,13 +3,13 @@ package hibernate.entity;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "employee")
-public class Employee {
+public class Employee implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "Employee_id")
     private String Employee_id;
 

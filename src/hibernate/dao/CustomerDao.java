@@ -34,11 +34,11 @@ public class CustomerDao {
             //getting session object from session factory
             Session session = sessionFactory.openSession();
             //getting transaction object from session object
-            session.beginTransaction();
+            transaction=session.beginTransaction();;
 
             session.save(customer);
             System.out.println("Inserted Successfully");
-            session.getTransaction().commit();
+            transaction.commit();
             session.close();
             sessionFactory.close();
         } catch (Exception e) {
@@ -58,14 +58,14 @@ public class CustomerDao {
     	try {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
-        session.beginTransaction();
+        transaction=session.beginTransaction();
         customerList = (List<Customer>) session.createQuery ("FROM Customer").getResultList();
 
 //        for(Customer customer : customerList) {
 //        }
-
-        session.getTransaction().commit();
-        sessionFactory.close();
+//
+         transaction.commit();
+        session.close();
     	} catch (Exception e) {
         	System.err.println(e.getMessage());
 			logger.error("Error reading employee Record "+e.getMessage());
@@ -98,6 +98,7 @@ public class CustomerDao {
             }
             // commit transaction
             transaction.commit();
+            session.close();
         } catch (Exception e) {
         	System.err.println(e.getMessage());
 			logger.error("Error getting employee Record "+e.getMessage());
@@ -109,15 +110,15 @@ public class CustomerDao {
         return customer;
     }
 
-    public void updateCustomer(String Customer_Id, String Lastname,String Firstname, String Email,int Contact_num, String Address){
-        Transaction transaction = null;
+    public boolean updateCustomer(String Customer_Id, String Lastname,String Firstname, String Email,int Contact_num, String Address){
+        Transaction transaction = null; int check=0;
         try {
 	        //Create session factory object
 	        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	        //getting session object from session factory
 	        Session session = sessionFactory.openSession();
 	        //getting transaction object from session object
-	        session.beginTransaction();
+            transaction=session.beginTransaction();
 	
 	        Customer customer = (Customer) session.get(Customer.class, Customer_Id);
 	        customer.setLastname(Lastname);
@@ -126,9 +127,9 @@ public class CustomerDao {
 	        customer.setAddress(Address);
 	        customer.setEmail(Email);
 	        session.update(customer);
-	        System.out.println("Updated Successfully");
-	        session.getTransaction().commit();
-	        sessionFactory.close();
+            check=1;
+            transaction.commit();
+            session.close();
     	} catch (Exception e) {
 			System.err.println("Error updating "+e.getMessage());
 			logger.error("Error updating employee Record "+e.getMessage());
@@ -137,22 +138,28 @@ public class CustomerDao {
             }
             e.printStackTrace();
         }
+        if(check==1){
+            return true;
+        }else{
+            return false;
+        }
     }
 
-    public void deleteCustomer(String Customer_Id){
+    public boolean deleteCustomer(String Customer_Id){
         Transaction transaction = null;
+        int check=0;
         try {
         //Create session factory object
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         //getting session object from session factory
         Session session = sessionFactory.openSession();
-        //getting transaction object from session object
-        session.beginTransaction();
+        //getting transaction object from session objec
+        transaction=session.beginTransaction();
         Customer customer = (Customer) session.load(Customer.class, Customer_Id);
         session.delete(customer);
-        System.out.println("Deleted Successfully");
-        session.getTransaction().commit();
-        sessionFactory.close();
+        check=1;
+        transaction.commit();
+        session.close();
     	} catch (Exception e) {
         	System.err.println("Error Deleting "+e.getMessage());
 			logger.error("Error Deleting employee Record "+e.getMessage());
@@ -160,6 +167,11 @@ public class CustomerDao {
                 transaction.rollback();
             }
             e.printStackTrace();
+        }
+        if(check==1){
+            return true;
+        }else{
+            return false;
         }
     }
 
