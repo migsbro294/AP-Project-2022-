@@ -271,12 +271,15 @@ public class CustomerDashboard extends JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-        dispose();
-        new CustomerComplaint(client,custID);
+//        dispose();
+//        new CustomerComplaint(client,custID);
     }
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+        dispose();
+        new CustomerAccount(client,custID);
+
     }
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {

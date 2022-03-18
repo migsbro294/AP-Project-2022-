@@ -77,7 +77,7 @@ CREATE TABLE `customer` (
 CREATE TABLE `customer_password` (
   `Customer_Id` varchar(8) NOT NULL,
   `Salt` varchar(75) NOT NULL,
-  `Hash` varchar(90) NOT NULL
+  `Hash` varchar(170) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -104,7 +104,7 @@ CREATE TABLE `employee` (
 CREATE TABLE `employee_password` (
   `Employee_id` varchar(8) NOT NULL,
   `Salt` varchar(75) NOT NULL,
-  `Hash` varchar(90) NOT NULL
+  `Hash` varchar(170) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --

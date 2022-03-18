@@ -1,6 +1,7 @@
 package jdbc.controllers;
 
 import db.connection.DBConnector;
+import hibernate.entity.Account;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,30 +38,30 @@ public class AccountController {
 			return false;
 		}
 	}
-	public ArrayList<hibernate.entity.Account> selectAccount(String eId) {
-		ArrayList<hibernate.entity.Account> accounts = new ArrayList<hibernate.entity.Account>();
-		logger.info("Selecting Account");
+	public ArrayList getAccounts(String id){
+		ArrayList<Account> account = new ArrayList<Account>();
+		logger.info("Getting Account");
+		String sql = "SELECT * FROM account WHERE Customer_id = "+id;
 		try {
-			final String QUERY = "SELECT * FROM account WHERE Account_id = "+eId;
-			Statement stmt = dbConn.createStatement();
-			ResultSet rs = stmt.executeQuery(QUERY);
-			while(rs.next()) {
-				int accountNum= rs.getInt("Account_num");
-				String customerID= rs.getString("Customer_id");
-				String status= rs.getString("Status");
-				Date paymentDate= rs.getDate("Payment_date");
-				double balance= rs.getDouble("Balance");
-				double amount= rs.getDouble("Amount");
-
-				accounts.add(new hibernate.entity.Account(accountNum,customerID,status,paymentDate,balance,amount));
+			Statement statement=dbConn.createStatement();
+			ResultSet resultSet=statement.executeQuery(sql);
+			while(resultSet.next()){
+				Account account2= new Account();
+				account2.setAccount_num(resultSet.getInt(1));
+				account2.setCustomer_id(resultSet.getString(2));
+				account2.setStatus(resultSet.getString(3));
+				account2.setPayment_date(resultSet.getDate(4));
+				account2.setBalance(resultSet.getDouble(5));
+				account2.setAmount(resultSet.getDouble(6));
+				account.add(account2);
 			}
-			rs.close();
 		} catch (SQLException e) {
 			logger.error("Error setting account"+e.getMessage());
 			e.printStackTrace();
 		}
-		return accounts;
+		return  account;
 	}
+
 	public boolean updateAccount(String account_num, String customerID, String status, Date paymentDate, double balance, double amount) {
 		PreparedStatement updateSql;
 		int check=0;

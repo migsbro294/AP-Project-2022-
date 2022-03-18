@@ -151,6 +151,13 @@ public class Handler extends Thread{
                     outputStream.flush();
                 }
 
+                if(options==Options.GET_ACCOUNT){
+                    String customer_ID = (String) inputStream.readObject();
+                    ArrayList<Account> account = accountController.getAccounts(customer_ID);
+                    outputStream.writeObject(account);
+                    outputStream.flush();
+                }
+
 
 
                 if(options == Options.CUSTOMER_LOGIN) {
@@ -190,6 +197,8 @@ public class Handler extends Thread{
         }finally {
             logger.info("Closing socket");
             try {
+                outputStream.close();
+                inputStream.close();
                 socket.close();
             } catch (IOException e) {
                 logger.error("IOException: Error closing socket: "+e.getMessage());
