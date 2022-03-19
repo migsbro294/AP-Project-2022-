@@ -198,7 +198,7 @@ public class MainWindow extends javax.swing.JFrame {
             isValid = (Boolean) client.getResponse();
             if(isValid) {
                 dispose();
-                // new CustomerDashboard(client,id);
+                new CustomerDashboard(client,id);
             }else{
                 jLabel5.setText("*Invalid");
                 jLabel5.setVisible(true);
@@ -212,10 +212,10 @@ public class MainWindow extends javax.swing.JFrame {
             params.add(password);
             client.sendMultipleRequest(params);
             isValid = (Boolean) client.getResponse();
-            isValid=true;
+            isValid=true;//delete this
             if(isValid) {
                 dispose();
-                //new EmployeeDashboard(client,id);
+                new EmployeeDashboard(client,id);
             }else{
                 jLabel5.setText("*Invalid");
                 jLabel5.setVisible(true);

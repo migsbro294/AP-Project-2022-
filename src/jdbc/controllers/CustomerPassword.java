@@ -2,14 +2,12 @@ package jdbc.controllers;
 
 import db.connection.DBConnector;
 
+import javax.swing.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class CustomerPassword {
     private  Statement statement;
@@ -31,9 +29,12 @@ public class CustomerPassword {
             statement = connection.createStatement();
             check = statement.executeUpdate(insertSql);
             if (check == 1) {
-                System.out.println("password created");
+                JOptionPane.showMessageDialog(null, " Password Create Successfully",
+                        " Password Status", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, " Password Create Unsuccessfully " ,
+                    " Password failure", JOptionPane.INFORMATION_MESSAGE);
             System.out.println("SQL Exception thrown: create " + e.getMessage());
         }
     }
@@ -128,4 +129,29 @@ public class CustomerPassword {
         return password;
     }
 
+    //updating customer password
+    public  Boolean update(String id,  String oldPassword, String newPassword) {
+        String salt = getSalt();
+        int  check=0;
+        PreparedStatement updateSql;
+        if(validate(id, oldPassword)) {
+            String password = encryptPassword(newPassword,salt);
+            try {
+                updateSql = connection.prepareStatement("UPDATE customer_password SET Customer_id=?,Salt=?, Hash=? where Customer_id="+id);
+                updateSql.setObject(1, id);
+                updateSql.setObject(2, salt);
+                updateSql.setObject(3, password);
+                check= updateSql.executeUpdate();
+            }
+            catch(SQLException e)
+            {
+                //logger.error("Unable To Update Name For Item " +id+", "+e.getMessage());
+            }
+        }
+        if (check == 1) {
+            return true;
+        }else {
+            return false;
+        }
+    }
 }

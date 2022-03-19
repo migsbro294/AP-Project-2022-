@@ -8,6 +8,7 @@ import hibernate.entity.Customer;
 import hibernate.entity.Employee;
 import jdbc.controllers.ComplaintController;
 import mdi.internalFrames.Complaints;
+import mdi.internalFrames.CreateCustomer;
 
 
 import javax.swing.*;
@@ -424,8 +425,8 @@ public class EmployeeDashboard extends javax.swing.JFrame {
     private void jMenuItemUpdateActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         //  jDesktopPane1.removeAll();
-        // UpdateCustomer customer=new UpdateCustomer();
-        //jDesktopPane1.add(customer).setVisible(true);
+//        UpdateCustomer customer=new UpdateCustomer(client,empID);
+//        jDesktopPane1.add(customer).setVisible(true);
     }
 
     private void jMenuItemDeleteActionPerformed(java.awt.event.ActionEvent evt) {
@@ -438,16 +439,17 @@ public class EmployeeDashboard extends javax.swing.JFrame {
     private void jMenuItemCreateActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         // jDesktopPane1.removeAll();
-//        CreateCustomer create=new CreateCustomer(client);
+//        CreateCustomer create=new CreateCustomer(client,empID);
 //        jDesktopPane1.add(create).setVisible(true);
 
     }
 
     private void jMenuItemGetActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+
         //  jDesktopPane1.removeAll();
-        // ReadCustomer read=new ReadCustomer();
-        //jDesktopPane1.add(read).setVisible(true);
+//         ReadCustomer read=new ReadCustomer(client,empID);
+//        jDesktopPane1.add(read).setVisible(true);
     }
 
     private void jButtonSendActionPerformed(java.awt.event.ActionEvent evt) {
@@ -464,12 +466,14 @@ public class EmployeeDashboard extends javax.swing.JFrame {
     private void jMenuComplainsActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         //jDesktopPane1.removeAll();
-        //Complaints complaints=new Complaints();
-        //jDesktopPane1.add(complaints).setVisible(true);
+        Complaints complaints=new Complaints(client,empID);
+        jDesktopPane1.add(complaints).setVisible(true);
     }
 
     private void jButtonComplainsActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+        Complaints complaints=new Complaints(client,empID);
+        jDesktopPane1.add(complaints).setVisible(true);
 
     }
 

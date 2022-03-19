@@ -271,8 +271,8 @@ public class CustomerDashboard extends JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-//        dispose();
-//        new CustomerComplaint(client,custID);
+        dispose();
+        new CustomerComplaint(client,custID);
     }
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
@@ -292,6 +292,8 @@ public class CustomerDashboard extends JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+        dispose();
+        new CustomerDetails(client,custID);
     }
 
     private void jList1AncestorAdded(javax.swing.event.AncestorEvent evt) {
@@ -323,7 +325,7 @@ public class CustomerDashboard extends JFrame {
     public void addComplaint(String customerID){
 
         DefaultListModel defaultListModel = new DefaultListModel();
-        Date date; String eid; String names;
+        Date date; String eid;
         String detail, reponse;
 
         client.sendOption(Options.GET_COMPLAINT);
@@ -333,6 +335,7 @@ public class CustomerDashboard extends JFrame {
 
         defaultListModel.removeAllElements();
         for (Complaint complaint: info) {
+            String names="no response as yet";
             date=complaint.getDate();
             eid=complaint.getEmployee_id();
             detail=complaint.getDetails();
@@ -340,12 +343,15 @@ public class CustomerDashboard extends JFrame {
 
 
 
-            Employee employee;
-            client.sendOption(Options.GET_EMPLOYEE);
-            client.sendOneRequest(eid);
-            employee = (Employee) client.getResponse();
+            if(!eid.equals("0000")){
+                Employee employee;
+                client.sendOption(Options.GET_EMPLOYEE);
+                client.sendOneRequest(eid);
+                employee = (Employee) client.getResponse();
+                names=employee.getFirstName();
+            }
 
-            names=employee.getFirstName();
+
 
             defaultListModel.addElement(date+"  "+names);
             defaultListModel2.addElement("You : "+detail);
@@ -372,16 +378,4 @@ public class CustomerDashboard extends JFrame {
         jLabel13.setText("Date " + dateTimeFormatter.format(localDate1));
     }
 
-    public static void main(String args[]) {
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CustomerDashboard().setVisible(true);
-            }
-        });
-    }
-
-    public CustomerDashboard() {
-        initComponents();
-    }
 }

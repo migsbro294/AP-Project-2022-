@@ -85,12 +85,12 @@ public class AccountController {
 			return false;
 		}
 	}
-	public boolean deleteAccount(int aNum) {
+	public boolean deleteAccount(String id) {
 		PreparedStatement deleteSql;
 		int check=0;
 		logger.info("Delete Account");
 		try {
-			deleteSql = dbConn.prepareStatement("DELETE FROM account WHERE Account_num ="+aNum);
+			deleteSql = dbConn.prepareStatement("DELETE FROM account WHERE Customer_id ="+id);
 			check= deleteSql.executeUpdate();
 		} catch (SQLException e) {
 			logger.error("Error deleting account"+e.getMessage());

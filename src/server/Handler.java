@@ -61,15 +61,15 @@ public class Handler extends Thread{
             while(true){
                 Options options = (Options) inputStream.readObject();
 
-    //JDBC used to created
+    // created
                 if(options== Options.CREATE_CUSTOMER) {
                     String id = (String) inputStream.readObject();
                     String lastname = (String) inputStream.readObject();
                     String firstname = (String) inputStream.readObject();
                     String email = (String) inputStream.readObject();
-                    int contact_num = (int) inputStream.readObject();
+                    String contact_num = (String) inputStream.readObject();
                     String address = (String) inputStream.readObject();
-                    boolean created= customerController.createCustomer(id,lastname,firstname,email,contact_num,address);
+                    boolean created= customerController.createCustomer(id,lastname,firstname,email, Integer.parseInt(contact_num),address);
                     outputStream.writeObject(created);
                     outputStream.flush();
                 }
@@ -93,9 +93,9 @@ public class Handler extends Thread{
                     String details = (String) inputStream.readObject();
                     String employeeID = (String) inputStream.readObject();
                     String status = (String) inputStream.readObject();
-                    Date date = (Date) inputStream.readObject();
+                    String date = (String) inputStream.readObject();
                     String instruction = (String) inputStream.readObject();
-                    boolean created=complaintController.createComplaint( complaintID,customerID,category,details,employeeID,status, java.sql.Date.valueOf(date.toString()),instruction);
+                    boolean created=complaintDao.createComplaint(complaintID,customerID,category,details,employeeID,status, java.sql.Date.valueOf(date.toString()),instruction);
                     outputStream.writeObject(created);
                     outputStream.flush();
                 }
@@ -112,16 +112,73 @@ public class Handler extends Thread{
                 }
 
                 //used hibernate to update
+                if(options== Options.UPDATE_CUSTOMER) {
+                    String id = (String) inputStream.readObject();
+                    String lastname = (String) inputStream.readObject();
+                    String firstname = (String) inputStream.readObject();
+                    String email = (String) inputStream.readObject();
+                    String contact_num = (String) inputStream.readObject();
+                    String address = (String) inputStream.readObject();
+                    boolean created= customerDao.updateCustomer(id,lastname,firstname,email, Integer.parseInt(contact_num),address);
+                    outputStream.writeObject(created);
+                    outputStream.flush();
+                }
 
+                if(options == Options.UPDATE_CUST_PASSWORD) {
+                    String id = (String) inputStream.readObject();
+                    String oldPassword = (String) inputStream.readObject();
+                    String newPassword = (String) inputStream.readObject();
+                    Boolean isUpdated = customerPassword.update(id,oldPassword,newPassword);
+                    outputStream.writeObject(isUpdated);
+                }
+
+                if(options==Options.UPDATE_COMPLAINT){
+                    String complaintID = (String) inputStream.readObject();
+                    String customerID = (String) inputStream.readObject();
+                    String category = (String) inputStream.readObject();
+                    String details = (String) inputStream.readObject();
+                    String employeeID = (String) inputStream.readObject();
+                    String status = (String) inputStream.readObject();
+                    String date = (String) inputStream.readObject();
+                    String instruction = (String) inputStream.readObject();
+                    boolean created=complaintController.updateComplaint(complaintID,customerID,category,details,employeeID,status, java.sql.Date.valueOf(date.toString()),instruction);
+                    outputStream.writeObject(created);
+                    outputStream.flush();
+                }
 
                 //both hibernate and JDBC used to delete
+                if(options==Options.DELETE_CUSTOMER){
+                    String id = (String) inputStream.readObject();
+                    boolean del = customerDao.deleteCustomer(id);
+                    outputStream.writeObject(del);
+                    outputStream.flush();
+                }
+
+                if(options==Options.DELETE_ACCOUNT){
+                    String id = (String) inputStream.readObject();
+                    boolean del = accountController.deleteAccount(id);
+                    outputStream.writeObject(del);
+                    outputStream.flush();
+                }
+
+                if(options==Options.DELETE_COMPLAINT){
+                    String id = (String) inputStream.readObject();
+                    boolean del = complaintController.deleteComplaint(id);
+                    outputStream.writeObject(del);
+                    outputStream.flush();
+                }
 
 
 
 
                 //both hibernate and JDBC used to READ
                 if(options==Options.READ_ALL_COMPLAINT){
-                    List<Complaint> read = complaintController.readALLComplaint();
+                    List<Complaint> read =complaintDao.readComplaint();
+                    outputStream.writeObject(read);
+                    outputStream.flush();
+                }
+                if(options==Options.READ_ALL_CUSTOMER){
+                    ArrayList<Customer> read =customerController.readALLCustomer();
                     outputStream.writeObject(read);
                     outputStream.flush();
                 }
@@ -140,6 +197,12 @@ public class Handler extends Thread{
                 if(options==Options.GET_COMPLAINT){
                     String complaint_id = (String) inputStream.readObject();
                     List get = complaintController.getComplaint(complaint_id);
+                    outputStream.writeObject(get);
+                    outputStream.flush();
+                }
+                if(options==Options.GET_COMPLAINT2){
+                    String complaint_id = (String) inputStream.readObject();
+                    Complaint get = complaintDao.getComplaint(complaint_id);
                     outputStream.writeObject(get);
                     outputStream.flush();
                 }
