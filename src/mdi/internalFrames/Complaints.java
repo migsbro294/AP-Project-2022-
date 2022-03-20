@@ -4,6 +4,7 @@ import client.Client;
 import client.Options;
 import hibernate.entity.Complaint;
 import hibernate.entity.Customer;
+import hibernate.entity.Employee;
 
 import javax.persistence.Column;
 import javax.swing.*;
@@ -47,6 +48,7 @@ public class Complaints extends javax.swing.JInternalFrame {
         this.empID=id;
         initComponents();
         addToTable();
+        this.addTechnicianToList();
     }
 
 
@@ -111,6 +113,12 @@ public class Complaints extends javax.swing.JInternalFrame {
         jLabel5.setText("Customer Details");
 
         jLabel7.setText("Response");
+
+        jList5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jList5MouseClicked(evt);
+            }
+        });
 
         jScrollPane7.setViewportView(jList5);
 
@@ -291,8 +299,51 @@ public class Complaints extends javax.swing.JInternalFrame {
 
     private void jButtonAssignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAssignActionPerformed
         // TODO add your handling code here:
+        if(!(technicianId.isEmpty() || complaint_id.isEmpty())){
+            System.out.println(technicianId);
+            System.out.println(complaint_id);
+            client.sendOption(Options.ASSIGN_COMPLAINT);
+            List<String> params = new ArrayList<String>();
+            params.add(technicianId);
+            params.add(complaint_id);
+            client.sendMultipleRequest(params);
+            boolean isAssign = (Boolean) client.getResponse();
+            if (isAssign){
+                JOptionPane.showMessageDialog(null, "Complaint Was Assign Successfully",
+                        " Assign  Status", JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                JOptionPane.showMessageDialog(null, "Complaint Assign Unsuccessfully " ,
+                        " Assign failure", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }else {
+            JOptionPane.showMessageDialog(null, " The complaint or the technician list is not click" ,
+                    " Assign failure", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
+    DefaultListModel model2 = new DefaultListModel();
+    private void addTechnicianToList(){
+        DefaultListModel model = new DefaultListModel();
+        client.sendOption(Options.READ_ALL_EMPLOYEE);
+        List<Employee> read= (List<Employee>) client.getResponse();
+        for(Employee employee:read){
+            if(employee.getRole().equals("Technician")){
+                model.addElement(employee.getFirstName()+" "+employee.getLastName());
+                model2.addElement(employee.getEmployee_id());
+            }
+        }
+        jList5.setModel(model);
+    }
+
+
+    String technicianId="";
+    String complaintIdForTech="";
+    private void jList5MouseClicked(java.awt.event.MouseEvent evt) {
+        // TODO add your handling code here:
+        int list=jList5.getAnchorSelectionIndex();
+        Object id=model2.get(list);
+        technicianId= (String) id;
+    }
 
     private void addToTable(){
         client.sendOption(Options.READ_ALL_COMPLAINT);

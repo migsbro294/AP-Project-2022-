@@ -40,6 +40,7 @@ public class Handler extends Thread{
     AccountDao accountDao = new AccountDao();
     CustomerPassword customerPassword = new CustomerPassword();
     EmployeePassword employeePassword = new EmployeePassword();
+    TechnicianComplaint technicianComplaint=new TechnicianComplaint();
 
 
     public Handler(Socket socket) throws IOException {
@@ -115,6 +116,13 @@ public class Handler extends Thread{
 
                     boolean created=accountController.createAccount(Integer.parseInt(accountNum),customerID,status,sqlStartDate,Double.parseDouble(balance),Double.parseDouble(amount));
                     outputStream.writeObject(created);
+                    outputStream.flush();
+                }
+                if(options==Options.ASSIGN_COMPLAINT){
+                    String employeeId = (String) inputStream.readObject();
+                    String complaintId = (String) inputStream.readObject();
+                    boolean assign=technicianComplaint.assign(employeeId,complaintId);
+                    outputStream.writeObject(assign);
                     outputStream.flush();
                 }
 
@@ -238,7 +246,16 @@ public class Handler extends Thread{
                     outputStream.writeObject(read);
                     outputStream.flush();
                 }
-
+                if(options==Options.READ_ALL_EMPLOYEE){
+                    List<Employee> read =employeeDao.readEmployee();
+                    outputStream.writeObject(read);
+                    outputStream.flush();
+                }
+                if(options==Options.READ_ASSIGN_COMPLAINT){
+                    ArrayList<TechnicianComplaint> read=technicianComplaint.readALL();
+                    outputStream.writeObject(read);
+                    outputStream.flush();
+                }
 
 
 

@@ -516,22 +516,37 @@ public class EmployeeDashboard extends javax.swing.JFrame {
     private void jMenuComplainsActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         //jDesktopPane1.removeAll();
-        Complaints complaints=new Complaints(client,empID);
-        jDesktopPane1.add(complaints).setVisible(true);
+        if(role.equals("Representative")){
+            Complaints complaints=new Complaints(client,empID);
+            jDesktopPane1.add(complaints).setVisible(true);
+        }else if(role.equals("Technician")){
+            ComplaintsTech createA=new ComplaintsTech(client,empID);
+            jDesktopPane1.add(createA).setVisible(true);
+        }
     }
 
     private void jButtonComplainsActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-        Complaints complaints=new Complaints(client,empID);
-        jDesktopPane1.add(complaints).setVisible(true);
+        if(role.equals("Representative")){
+            Complaints complaints=new Complaints(client,empID);
+            jDesktopPane1.add(complaints).setVisible(true);
+        }else if(role.equals("Technician")){
+            ComplaintsTech createA=new ComplaintsTech(client,empID);
+            jDesktopPane1.add(createA).setVisible(true);
+        }
 
     }
 
     private void jMenuItemViewComplaintsActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         //jDesktopPane1.removeAll();
-        Complaints complaints=new Complaints(client,empID);
-        jDesktopPane1.add(complaints).setVisible(true);
+        if(role.equals("Representative")){
+            Complaints complaints=new Complaints(client,empID);
+            jDesktopPane1.add(complaints).setVisible(true);
+        }else if(role.equals("Technician")){
+            ComplaintsTech createA=new ComplaintsTech(client,empID);
+            jDesktopPane1.add(createA).setVisible(true);
+        }
     }
 
     private void jMenuItemDeleteEmployeeActionPerformed(java.awt.event.ActionEvent evt) {
@@ -593,6 +608,7 @@ public class EmployeeDashboard extends javax.swing.JFrame {
         jList1.setModel(defaultListModel);
     }
 
+    String role="";
     private void nameAndDate(String id) {//display customer name and the current date on the gui
         String name = "none";
 
@@ -601,6 +617,7 @@ public class EmployeeDashboard extends javax.swing.JFrame {
         client.sendOneRequest(id);
         employee = (Employee) client.getResponse();
         name= employee.getFirstName()+" "+employee.getLastName();
+        role=employee.getRole();
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/uuuu");
         LocalDate localDate1 = LocalDate.now();
