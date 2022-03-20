@@ -212,7 +212,6 @@ public class MainWindow extends javax.swing.JFrame {
             params.add(password);
             client.sendMultipleRequest(params);
             isValid = (Boolean) client.getResponse();
-            isValid=true;//delete this
             if(isValid) {
                 dispose();
                 new EmployeeDashboard(client,id);

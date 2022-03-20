@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -78,10 +79,10 @@ public class Handler extends Thread{
                     String id = (String) inputStream.readObject();
                     String firstname = (String) inputStream.readObject();
                     String lastname = (String) inputStream.readObject();
-                    int contact_num = (int) inputStream.readObject();
+                    String contact_num = (String) inputStream.readObject();
                     String role = (String) inputStream.readObject();
                     String email = (String) inputStream.readObject();
-                    boolean created= employeeController.createEmployee(id,firstname,lastname,contact_num,role,email);
+                    boolean created= employeeController.createEmployee(id,firstname,lastname, Integer.parseInt(contact_num),role,email);
                     outputStream.writeObject(created);
                     outputStream.flush();
                 }
@@ -103,10 +104,16 @@ public class Handler extends Thread{
                     String accountNum = (String) inputStream.readObject();
                     String customerID = (String) inputStream.readObject();
                     String status = (String) inputStream.readObject();
-                    Date paymentDate = (Date) inputStream.readObject();
-                    double balance = (double) inputStream.readObject();
-                    double amount = (double) inputStream.readObject();
-                    boolean created=accountController.createAccount( accountNum,customerID,status, java.sql.Date.valueOf(paymentDate.toString()),balance,amount);
+                    String paymentDate = (String) inputStream.readObject();
+                    String balance = (String) inputStream.readObject();
+                    String amount = (String) inputStream.readObject();
+
+                    String startDate=paymentDate; // Input String from payment date
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy"); // New Pattern
+                    java.util.Date date = sdf1.parse(startDate); // Returns a Date format object with the pattern
+                    java.sql.Date sqlStartDate = new java.sql.Date(date.getTime());
+
+                    boolean created=accountController.createAccount(Integer.parseInt(accountNum),customerID,status,sqlStartDate,Double.parseDouble(balance),Double.parseDouble(amount));
                     outputStream.writeObject(created);
                     outputStream.flush();
                 }
@@ -123,12 +130,31 @@ public class Handler extends Thread{
                     outputStream.writeObject(created);
                     outputStream.flush();
                 }
+                if(options== Options.UPDATE_EMPLOYEE) {
+                    String id = (String) inputStream.readObject();
+                    String firstname = (String) inputStream.readObject();
+                    String lastname = (String) inputStream.readObject();
+                    String contact_num = (String) inputStream.readObject();
+                    String role = (String) inputStream.readObject();
+                    String email = (String) inputStream.readObject();
+                    boolean created = employeeDao.updateEmployee(id,firstname,lastname, Integer.parseInt(contact_num),role,email);
+                    outputStream.writeObject(created);
+                    outputStream.flush();
+                }
 
                 if(options == Options.UPDATE_CUST_PASSWORD) {
                     String id = (String) inputStream.readObject();
                     String oldPassword = (String) inputStream.readObject();
                     String newPassword = (String) inputStream.readObject();
                     Boolean isUpdated = customerPassword.update(id,oldPassword,newPassword);
+                    outputStream.writeObject(isUpdated);
+                }
+
+                if(options == Options.UPDATE_EMP_PASSWORD) {
+                    String id = (String) inputStream.readObject();
+                    String oldPassword = (String) inputStream.readObject();
+                    String newPassword = (String) inputStream.readObject();
+                    Boolean isUpdated = employeePassword.update(id,oldPassword,newPassword);
                     outputStream.writeObject(isUpdated);
                 }
 
@@ -146,6 +172,24 @@ public class Handler extends Thread{
                     outputStream.flush();
                 }
 
+                if(options==Options.UPDATE_ACCOUNT){
+                    String accountNum = (String) inputStream.readObject();
+                    String customerID = (String) inputStream.readObject();
+                    String status = (String) inputStream.readObject();
+                    String paymentDate = (String) inputStream.readObject();
+                    String balance = (String) inputStream.readObject();
+                    String amount = (String) inputStream.readObject();
+
+                    String startDate=paymentDate; // Input String from payment date
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy"); // New Pattern
+                    java.util.Date date = sdf1.parse(startDate); // Returns a Date format object with the pattern
+                    java.sql.Date sqlStartDate = new java.sql.Date(date.getTime());
+
+                    boolean created=accountDao.updateAccount(Integer.parseInt(accountNum),customerID,status,sqlStartDate,Double.parseDouble(balance),Double.parseDouble(amount));
+                    outputStream.writeObject(created);
+                    outputStream.flush();
+                }
+
                 //both hibernate and JDBC used to delete
                 if(options==Options.DELETE_CUSTOMER){
                     String id = (String) inputStream.readObject();
@@ -156,8 +200,20 @@ public class Handler extends Thread{
 
                 if(options==Options.DELETE_ACCOUNT){
                     String id = (String) inputStream.readObject();
-                    boolean del = accountController.deleteAccount(id);
+                    boolean del = accountController.deleteAccount(Integer.parseInt(id));
                     outputStream.writeObject(del);
+                    outputStream.flush();
+                }
+
+                if(options==Options.DELETE_ACCOUNT1){
+                    String id = (String) inputStream.readObject();
+                    accountDao.deleteComplaint(Integer.parseInt(id));
+                    outputStream.flush();
+                }
+                if(options==Options.DELETE_EMPLOYEE){
+                    String id = (String) inputStream.readObject();
+                    boolean dele=employeeDao.deleteEmployee(id);
+                    outputStream.writeObject(dele);
                     outputStream.flush();
                 }
 
@@ -221,6 +277,12 @@ public class Handler extends Thread{
                     outputStream.flush();
                 }
 
+                if(options==Options.GET_ACCOUNT2){
+                    String id = (String) inputStream.readObject();
+                    Account account=accountDao.getAccount(Integer.parseInt(id));
+                    outputStream.writeObject(account);
+                    outputStream.flush();
+                }
 
 
                 if(options == Options.CUSTOMER_LOGIN) {

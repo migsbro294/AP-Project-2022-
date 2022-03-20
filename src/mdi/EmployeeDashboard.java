@@ -6,13 +6,12 @@ import client.Options;
 import hibernate.entity.Complaint;
 import hibernate.entity.Customer;
 import hibernate.entity.Employee;
-import jdbc.controllers.ComplaintController;
-import mdi.internalFrames.Complaints;
-import mdi.internalFrames.CreateCustomer;
+import mdi.internalFrames.*;
 
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ import java.util.List;
 public class EmployeeDashboard extends javax.swing.JFrame {
 
 
-    // Variables declaration - do not modify
+    // Variables declaration
     private javax.swing.JButton jButtonComplains;
     private javax.swing.JButton jButtonSend;
     private javax.swing.JDesktopPane jDesktopPane1;
@@ -36,6 +35,7 @@ public class EmployeeDashboard extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuComplains;
     private javax.swing.JMenuItem jMenuItem1;
@@ -48,6 +48,10 @@ public class EmployeeDashboard extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemGet;
     private javax.swing.JMenuItem jMenuItemProfile;
     private javax.swing.JMenuItem jMenuItemUpdate;
+    private javax.swing.JMenuItem jMenuItemcreateAccount;
+    private javax.swing.JMenuItem jMenuItemReadAccount;
+    private javax.swing.JMenuItem jMenuItemUpdateAccount;
+    private javax.swing.JMenuItem jMenuItemDeleteAccount;
     private javax.swing.JMenuItem jMenuItemViewComplaints;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -108,7 +112,12 @@ public class EmployeeDashboard extends javax.swing.JFrame {
         jMenuItemCreateEmployee = new javax.swing.JMenuItem();
         jMenuItemDeleteEmployee = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
         jMenuItemUpdate = new javax.swing.JMenuItem();
+        jMenuItemcreateAccount= new javax.swing.JMenuItem();
+        jMenuItemReadAccount= new javax.swing.JMenuItem();
+        jMenuItemUpdateAccount= new javax.swing.JMenuItem();
+        jMenuItemDeleteAccount= new javax.swing.JMenuItem();
         jMenuItemDelete = new javax.swing.JMenuItem();
         jMenuItemCreate = new javax.swing.JMenuItem();
         jMenuItemGet = new javax.swing.JMenuItem();
@@ -392,6 +401,47 @@ public class EmployeeDashboard extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuComplains);
 
+
+        jMenu4.setText("Customer Account");
+
+        jMenuItemcreateAccount.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItemcreateAccount.setText("Create Account");
+        jMenuItemcreateAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCreateAccountActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItemcreateAccount);
+
+        jMenuItemReadAccount.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItemReadAccount.setText("Read Account");
+        jMenuItemReadAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemjReadAccountActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItemReadAccount);
+
+        jMenuItemUpdateAccount.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItemUpdateAccount.setText("Update Account");
+        jMenuItemUpdateAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemUpdateAccountActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItemUpdateAccount);
+
+        jMenuItemDeleteAccount.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItemDeleteAccount.setText("Delete Account");
+        jMenuItemDeleteAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemDeleteAccountActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItemDeleteAccount);
+
+        jMenuBar1.add(jMenu4);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -414,8 +464,8 @@ public class EmployeeDashboard extends javax.swing.JFrame {
     private void jMenuItemProfileActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         //  jDesktopPane1.removeAll();
-        //  EditProfile profile=new EditProfile();
-        //  jDesktopPane1.add(profile).setVisible(true);
+//          EditProfile profile=new EditProfile(client,empID);
+//          jDesktopPane1.add(profile).setVisible(true);
     }
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {
@@ -439,8 +489,8 @@ public class EmployeeDashboard extends javax.swing.JFrame {
     private void jMenuItemCreateActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         // jDesktopPane1.removeAll();
-//        CreateCustomer create=new CreateCustomer(client,empID);
-//        jDesktopPane1.add(create).setVisible(true);
+        CreateCustomer create=new CreateCustomer(client,empID);
+        jDesktopPane1.add(create).setVisible(true);
 
     }
 
@@ -494,9 +544,33 @@ public class EmployeeDashboard extends javax.swing.JFrame {
     private void jMenuItemCreateEmployeeActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         //jDesktopPane1.removeAll();
-        //CreateEmployee create=new CreateEmployee();
-        //jDesktopPane1.add(create).setVisible(true);
+        CreateEmployee createE=new CreateEmployee(client,empID);
+        jDesktopPane1.add(createE).setVisible(true);
 
+    }
+
+    private void jMenuItemCreateAccountActionPerformed(java.awt.event.ActionEvent evt) {
+        //jDesktopPane1.removeAll();
+//        CreateAccount createA=new CreateAccount(client,empID);
+//        jDesktopPane1.add(createA).setVisible(true);
+    }
+
+    private void jMenuItemjReadAccountActionPerformed(java.awt.event.ActionEvent evt) {
+        //jDesktopPane1.removeAll();
+//        ReadAccount readA=new ReadAccount(client,empID);
+//        jDesktopPane1.add(readA).setVisible(true);
+    }
+
+    private void jMenuItemUpdateAccountActionPerformed(java.awt.event.ActionEvent evt) {
+        //jDesktopPane1.removeAll();
+//        UpdateAccount updateA=new UpdateAccount(client,empID);
+//        jDesktopPane1.add(updateA).setVisible(true);
+    }
+
+    private void jMenuItemDeleteAccountActionPerformed(java.awt.event.ActionEvent evt) {
+        //jDesktopPane1.removeAll();
+//        DeleteAccount deleteA=new DeleteAccount(client,empID);
+//        jDesktopPane1.add(deleteA).setVisible(true);
     }
 
     public void listOfComplaintsName(){

@@ -16,7 +16,7 @@ public class AccountController {
 		
 	}
 	
-	public boolean createAccount(String account_num, String customerID, String status, Date paymentDate, double balance, double amount) {
+	public boolean createAccount(int account_num, String customerID, String status, Date paymentDate, double balance, double amount) {
 		int check=0;
 		logger.info("Creating Account");
 		try {
@@ -85,7 +85,7 @@ public class AccountController {
 			return false;
 		}
 	}
-	public boolean deleteAccount(String id) {
+	public boolean deleteAccount(int id) {
 		PreparedStatement deleteSql;
 		int check=0;
 		logger.info("Delete Account");

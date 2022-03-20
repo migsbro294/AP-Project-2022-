@@ -131,9 +131,9 @@ public class CustomerAccount extends javax.swing.JFrame {
 
         jLabel4.setText("Due date");
 
-        jLabel5.setText("place status here");
+        jLabel5.setText("-");
 
-        jLabel7.setText("place date here");
+        jLabel7.setText("-");
 
         jLabel9.setText("$");
 

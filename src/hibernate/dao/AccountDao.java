@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import javax.persistence.Query;
+import javax.swing.*;
 
 import java.sql.SQLDataException;
 import java.util.ArrayList;
@@ -78,7 +79,7 @@ public class AccountDao {
 
 
 
-    public Account getAccount(String Customer_id) {
+    public Account getAccount(int Account_num) {
 
         Transaction transaction = null;
         Account account = null;
@@ -88,9 +89,9 @@ public class AccountDao {
             transaction = session.beginTransaction();
 
             // get an account object
-            String hql = " FROM Account A WHERE A.Customer_id = :Customer_id";
+            String hql = " FROM Account A WHERE A.Account_num = :Account_num";
             Query query = session.createQuery(hql);
-            query.setParameter("Customer_id", Customer_id);
+            query.setParameter("Account_num", Account_num);
             List results = query.getResultList();
             if (results != null && !results.isEmpty()) {
                 account = (Account) results.get(0);
@@ -156,12 +157,16 @@ public class AccountDao {
         Account account = (Account) session.load(Account.class, Account_num);
         session.delete(account);
         System.out.println("Deleted Successfully");
+            JOptionPane.showMessageDialog(null, "Account Was Delete Successfully",
+                    " Account Delete Status", JOptionPane.INFORMATION_MESSAGE);
         transaction.commit();
         session.close();
     	} catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
+            JOptionPane.showMessageDialog(null, "Account Was Delete Unsuccessfully " ,
+                    " Account Delete failure", JOptionPane.INFORMATION_MESSAGE);
     		System.err.println(e.getMessage());
 			logger.error("Error deleting account "+e.getMessage());
 		}

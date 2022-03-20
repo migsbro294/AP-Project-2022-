@@ -261,6 +261,14 @@ public class CreateCustomer extends javax.swing.JInternalFrame {
         if (isSubmit){
             JOptionPane.showMessageDialog(null, "Customer Was Create Successfully",
                     " Create Customer Status", JOptionPane.INFORMATION_MESSAGE);
+
+            client.sendOption(Options.CREATE_CUST_PASSWORD);
+            List<String> params2 = new ArrayList<String>();
+            params2.add(jTextField1.getText());
+            params2.add(password);
+            System.out.println(password);
+            client.sendMultipleRequest(params2);
+
             jTextField1.setText("");
             jTextField2.setText("");
             jTextField3.setText("");
@@ -273,14 +281,6 @@ public class CreateCustomer extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Customer Was Create Unsuccessfully " ,
                     "Create Customer Status", JOptionPane.INFORMATION_MESSAGE);
         }
-
-        client.sendOption(Options.CREATE_CUST_PASSWORD);
-        List<String> params2 = new ArrayList<String>();
-        params.add(jTextField1.getText());
-        params.add(password);
-        System.out.println(password);
-        client.sendMultipleRequest(params);
-
     }
 }
 
