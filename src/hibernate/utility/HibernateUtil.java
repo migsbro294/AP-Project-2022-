@@ -6,11 +6,12 @@ import org.hibernate.cfg.Configuration;
 
 public class HibernateUtil
 {
-    private static final SessionFactory sessionFactory;
+    private static final SessionFactory sessionFactory;//created attribute
     static
     {
         try
         {
+            //instantiate attribute with hibernate configuration file
             sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
         }
         catch(Throwable th){

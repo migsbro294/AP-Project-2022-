@@ -1,0 +1,10 @@
+2022-03-25 15:21:02,790 WARN o.h.o.c.pooling [Thread-0] HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2022-03-25 15:21:39,733 WARN s.Handler [Thread-0] EOFException : error performing client request on database null
+2022-03-25 15:26:13,922 WARN s.Handler [Thread-2] EOFException : error performing client request on database null
+2022-03-25 15:26:57,305 WARN s.Handler [Thread-3] EOFException : error performing client request on database null
+2022-03-25 15:27:50,807 WARN s.Handler [Thread-4] EOFException : error performing client request on database null
+2022-03-25 15:30:04,033 WARN s.Handler [Thread-5] EOFException : error performing client request on database null
+2022-03-25 15:32:09,693 WARN s.Handler [Thread-6] EOFException : error performing client request on database null
+2022-03-25 15:33:08,786 WARN s.Handler [Thread-7] EOFException : error performing client request on database null
+2022-03-25 15:35:25,616 WARN s.Handler [Thread-8] EOFException : error performing client request on database null
+2022-03-25 15:36:09,808 WARN s.Handler [Thread-9] EOFException : error performing client request on database null

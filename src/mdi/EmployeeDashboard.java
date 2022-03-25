@@ -464,8 +464,8 @@ public class EmployeeDashboard extends javax.swing.JFrame {
     private void jMenuItemProfileActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         //  jDesktopPane1.removeAll();
-//          EditProfile profile=new EditProfile(client,empID);
-//          jDesktopPane1.add(profile).setVisible(true);
+          EditProfile profile=new EditProfile(client,empID);
+          jDesktopPane1.add(profile).setVisible(true);
     }
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {
@@ -475,15 +475,15 @@ public class EmployeeDashboard extends javax.swing.JFrame {
     private void jMenuItemUpdateActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         //  jDesktopPane1.removeAll();
-//        UpdateCustomer customer=new UpdateCustomer(client,empID);
-//        jDesktopPane1.add(customer).setVisible(true);
+        UpdateCustomer customer=new UpdateCustomer(client,empID);
+        jDesktopPane1.add(customer).setVisible(true);
     }
 
     private void jMenuItemDeleteActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         // jDesktopPane1.removeAll();
-        // DeleteCustomer delete=new DeleteCustomer();
-        // jDesktopPane1.add(delete).setVisible(true);
+         DeleteCustomer delete=new DeleteCustomer(client,empID);
+         jDesktopPane1.add(delete).setVisible(true);
     }
 
     private void jMenuItemCreateActionPerformed(java.awt.event.ActionEvent evt) {
@@ -496,10 +496,9 @@ public class EmployeeDashboard extends javax.swing.JFrame {
 
     private void jMenuItemGetActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-
         //  jDesktopPane1.removeAll();
-//         ReadCustomer read=new ReadCustomer(client,empID);
-//        jDesktopPane1.add(read).setVisible(true);
+         ReadCustomer read=new ReadCustomer(client,empID);
+        jDesktopPane1.add(read).setVisible(true);
     }
 
     private void jButtonSendActionPerformed(java.awt.event.ActionEvent evt) {
@@ -552,8 +551,8 @@ public class EmployeeDashboard extends javax.swing.JFrame {
     private void jMenuItemDeleteEmployeeActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         //jDesktopPane1.removeAll();
-        // DeleteEmployee delete=new DeleteEmployee();
-        // jDesktopPane1.add(delete).setVisible(true);
+         DeleteEmployee delete=new DeleteEmployee(client,empID);
+         jDesktopPane1.add(delete).setVisible(true);
     }
 
     private void jMenuItemCreateEmployeeActionPerformed(java.awt.event.ActionEvent evt) {
@@ -566,26 +565,26 @@ public class EmployeeDashboard extends javax.swing.JFrame {
 
     private void jMenuItemCreateAccountActionPerformed(java.awt.event.ActionEvent evt) {
         //jDesktopPane1.removeAll();
-//        CreateAccount createA=new CreateAccount(client,empID);
-//        jDesktopPane1.add(createA).setVisible(true);
+        CreateAccount createA=new CreateAccount(client,empID);
+        jDesktopPane1.add(createA).setVisible(true);
     }
 
     private void jMenuItemjReadAccountActionPerformed(java.awt.event.ActionEvent evt) {
         //jDesktopPane1.removeAll();
-//        ReadAccount readA=new ReadAccount(client,empID);
-//        jDesktopPane1.add(readA).setVisible(true);
+        ReadAccount readA=new ReadAccount(client,empID);
+        jDesktopPane1.add(readA).setVisible(true);
     }
 
     private void jMenuItemUpdateAccountActionPerformed(java.awt.event.ActionEvent evt) {
         //jDesktopPane1.removeAll();
-//        UpdateAccount updateA=new UpdateAccount(client,empID);
-//        jDesktopPane1.add(updateA).setVisible(true);
+        UpdateAccount updateA=new UpdateAccount(client,empID);
+        jDesktopPane1.add(updateA).setVisible(true);
     }
 
     private void jMenuItemDeleteAccountActionPerformed(java.awt.event.ActionEvent evt) {
         //jDesktopPane1.removeAll();
-//        DeleteAccount deleteA=new DeleteAccount(client,empID);
-//        jDesktopPane1.add(deleteA).setVisible(true);
+        DeleteAccount deleteA=new DeleteAccount(client,empID);
+        jDesktopPane1.add(deleteA).setVisible(true);
     }
 
     public void listOfComplaintsName(){

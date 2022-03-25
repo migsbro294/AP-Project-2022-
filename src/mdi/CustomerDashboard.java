@@ -312,12 +312,15 @@ public class CustomerDashboard extends JFrame {
         Object data2=defaultListModel2.get(list);
         Object data3=defaultListModel3.get(list);
         model2.addElement(data2);
+        model2.addElement("-----------------------------------------------------");
         model2.addElement(data3);
         Dimension d = jList2.getPreferredSize();
         d.height = 100;
         jList2.setPreferredSize(d);
 
         jList2.setModel(model2);
+        MyCellRenderer cellRenderer = new MyCellRenderer(250);
+        jList2.setCellRenderer(cellRenderer);
 
     }
 
@@ -326,7 +329,7 @@ public class CustomerDashboard extends JFrame {
 
         DefaultListModel defaultListModel = new DefaultListModel();
         Date date; String eid;
-        String detail, reponse;
+        String detail, reponse="";
 
         client.sendOption(Options.GET_COMPLAINT);
         client.sendOneRequest(customerID);
@@ -335,11 +338,15 @@ public class CustomerDashboard extends JFrame {
 
         defaultListModel.removeAllElements();
         for (Complaint complaint: info) {
-            String names="no response as yet";
+            String names="No Response As Yet!";
             date=complaint.getDate();
             eid=complaint.getEmployee_id();
             detail=complaint.getDetails();
-            reponse=complaint.getInstructions();
+            if(!complaint.getInstructions().equals("0000")){
+                reponse=complaint.getInstructions();
+            }else {
+                reponse="";
+            }
 
 
 
@@ -348,17 +355,18 @@ public class CustomerDashboard extends JFrame {
                 client.sendOption(Options.GET_EMPLOYEE);
                 client.sendOneRequest(eid);
                 employee = (Employee) client.getResponse();
-                names=employee.getFirstName();
+                names=employee.getFirstName()+" "+employee.getLastName();
             }
 
 
 
-            defaultListModel.addElement(date+"  "+names);
-            defaultListModel2.addElement("You : "+detail);
-            defaultListModel3.addElement(names+" : "+reponse);
+            defaultListModel.addElement(date+"  "+names.toUpperCase());
+            defaultListModel2.addElement("YOU : "+detail);
+            defaultListModel3.addElement(names.toUpperCase()+" : "+reponse);
         }
-
+        MyCellRenderer cellRenderer = new MyCellRenderer(120);
         jList1.setModel(defaultListModel);
+        jList1.setCellRenderer(cellRenderer);
 
     }
 
@@ -376,6 +384,26 @@ public class CustomerDashboard extends JFrame {
         LocalDate localDate1 = LocalDate.now();
         jLabel12.setText(name);
         jLabel13.setText("Date " + dateTimeFormatter.format(localDate1));
+    }
+
+}
+class MyCellRenderer extends DefaultListCellRenderer {
+    public static final String HTML_1 = "<html><body style='width: ";
+    public static final String HTML_2 = "px'>";
+    public static final String HTML_3 = "</html>";
+    private int width;
+
+    public MyCellRenderer(int width) {
+        this.width = width;
+    }
+
+    @Override
+    public Component getListCellRendererComponent(JList list, Object value,
+                                                  int index, boolean isSelected, boolean cellHasFocus) {
+        String text = HTML_1 + String.valueOf(width) + HTML_2 + value.toString()
+                + HTML_3;
+        return super.getListCellRendererComponent(list, text, index, isSelected,
+                cellHasFocus);
     }
 
 }

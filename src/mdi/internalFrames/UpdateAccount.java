@@ -42,6 +42,10 @@ public class UpdateAccount extends javax.swing.JInternalFrame {
         jButtonSubmit2 = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setTitle("Update Account");
         jLabel19.setFont(new java.awt.Font("Helvetica", 0, 18)); // NOI18N
         jLabel19.setText("                            Update Account");
 

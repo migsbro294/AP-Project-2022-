@@ -26,10 +26,12 @@ import java.util.List;
 public class Handler extends Thread{
     private static final Logger logger = LogManager.getLogger(Handler.class);
 
+    //created attributes
     private final Socket socket;
     private   ObjectOutputStream outputStream;
     private  ObjectInputStream inputStream;
 
+    //instance of each CRUD operation classes
     CustomerController customerController = new CustomerController();
     EmployeeController employeeController =new EmployeeController();
     ComplaintController complaintController=new ComplaintController();
@@ -43,7 +45,9 @@ public class Handler extends Thread{
     TechnicianComplaint technicianComplaint=new TechnicianComplaint();
 
 
+    //accepts a socket object
     public Handler(Socket socket) throws IOException {
+        //instantiate attributes
         this.socket = socket;
         logger.info("configuring streams in handler ");
         try {
@@ -60,8 +64,8 @@ public class Handler extends Thread{
 
         try {
             logger.info("Carrying client request");
-            while(true){
-                Options options = (Options) inputStream.readObject();
+            while(true){//infinite loop for clients requests
+                Options options = (Options) inputStream.readObject();//accepting operation to perform on the database
 
     // created
                 if(options== Options.CREATE_CUSTOMER) {

@@ -15,9 +15,10 @@ public class ComplaintsTech extends javax.swing.JInternalFrame {
 
 
 
+    //attributes
     private Client client = null;
     String empID="";
-    public ComplaintsTech(Client clients,String id) {
+    public ComplaintsTech(Client clients,String id) {//accepts a socket object and a string
         this.client = clients;
         this.empID=id;
         initComponents();
@@ -25,6 +26,7 @@ public class ComplaintsTech extends javax.swing.JInternalFrame {
     }
 
     @SuppressWarnings("unchecked")
+    //created GUI
     private void initComponents() {
 
         jPanel3 = new javax.swing.JPanel();
@@ -66,10 +68,14 @@ public class ComplaintsTech extends javax.swing.JInternalFrame {
         jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
+        jTextArea1.setLineWrap(true);
+        jTextArea1.setWrapStyleWord(true);
         jScrollPane4.setViewportView(jTextArea1);
 
-        jTextAreaResponse.setColumns(20);
+       jTextAreaResponse.setColumns(20);
         jTextAreaResponse.setRows(5);
+        jTextAreaResponse.setLineWrap(true);
+        jTextAreaResponse.setWrapStyleWord(true);
         jScrollPane5.setViewportView(jTextAreaResponse);
 
         jScrollPane6.setViewportView(jListDetails);
@@ -267,6 +273,7 @@ public class ComplaintsTech extends javax.swing.JInternalFrame {
 
     private void addComplaintToList(String id){
 
+        //add complaint id to the Jlist that have assign to that particular person
         DefaultListModel model = new DefaultListModel();
         DefaultListModel modelList = new DefaultListModel();
         client.sendOption(Options.READ_ASSIGN_COMPLAINT);

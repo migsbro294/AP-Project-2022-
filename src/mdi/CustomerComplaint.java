@@ -124,8 +124,10 @@ public class CustomerComplaint extends javax.swing.JFrame {
 
         jRadioButton3.setText("broadband");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
+        //jTextArea1.setColumns(20);
+        //jTextArea1.setRows(5);
+        jTextArea1.setLineWrap(true);
+        jTextArea1.setWrapStyleWord(true);
         jScrollPane2.setViewportView(jTextArea1);
 
         jButton3.setText("Submit");

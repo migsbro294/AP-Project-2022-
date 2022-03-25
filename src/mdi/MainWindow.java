@@ -8,6 +8,7 @@ import java.util.List;
 
 public class MainWindow extends javax.swing.JFrame {
 
+    // Variables declaration
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -24,13 +25,13 @@ public class MainWindow extends javax.swing.JFrame {
     private Client client = null;
 
     //Creates new form MainWindow
-    public MainWindow() {
-        client = new Client();
+    public MainWindow() {//default constructor
+        client = new Client();//created a instance of Client class
         initComponents();
     }
 
     @SuppressWarnings("unchecked")
-
+    //created GUI
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
@@ -189,34 +190,33 @@ public class MainWindow extends javax.swing.JFrame {
         String id = jTextField1.getText();
         String password = new String(jPasswordField1.getPassword());
 
-        if(!(id.isEmpty() || password.isEmpty()) && jRadioButton2.isSelected() ) { //switch to isblank
-            client.sendOption(Options.CUSTOMER_LOGIN);
-            List<String> params = new ArrayList<String>();
-            params.add(id);
-            params.add(password);
-            client.sendMultipleRequest(params);
-            isValid = (Boolean) client.getResponse();
-            if(isValid) {
-                dispose();
-                new CustomerDashboard(client,id);
-            }else{
+        if(!(id.isEmpty() || password.isEmpty()) && jRadioButton2.isSelected() ) { //checking if fields are not empty
+            client.sendOption(Options.CUSTOMER_LOGIN);//sending option to server to perform customer login operation
+            List<String> params = new ArrayList<String>();//created arraylist
+            params.add(id);//adding strings to arraylist
+            params.add(password);//adding strings to arraylist
+            client.sendMultipleRequest(params);//sending login info in arraylist to the server to validate the info
+            isValid = (Boolean) client.getResponse();//getting response form server weather info is correct or not incorrect
+            if(isValid) {//if login info are correct
+                dispose();//closing the mainWindow Gui
+                new CustomerDashboard(client,id);//instantiate the CustomerDasboard GUI while passing it a socket object and string
+            }else{//if login info are incorrect
                 jLabel5.setText("*Invalid");
                 jLabel5.setVisible(true);
 
             }
 
-        } else  if(!(id.isEmpty() || password.isEmpty()) && jRadioButton1.isSelected() ) {
-            client.sendOption(Options.EMPLOYEE_LOGIN);
+        } else  if(!(id.isEmpty() || password.isEmpty()) && jRadioButton1.isSelected() ) {//checking if fields are not empty
+            client.sendOption(Options.EMPLOYEE_LOGIN);//sending option to server to perform employee login operation
             List<String> params = new ArrayList<String>();
-            params.add(id);
-            params.add(password);
-            client.sendMultipleRequest(params);
-            isValid = (Boolean) client.getResponse();
-            isValid=true;
-            if(isValid) {
-                dispose();
-                new EmployeeDashboard(client,id);
-            }else{
+            params.add(id);//adding id to arraylist
+            params.add(password);//adding password to arraylist
+            client.sendMultipleRequest(params);//sending login info in arraylist to the server to validate the info
+            isValid = (Boolean) client.getResponse();//getting response form server weather info is correct or not incorrect
+            if(isValid) {//if login info are correct
+                dispose();//closing the mainWindow Gui
+                new EmployeeDashboard(client,id);//instantiate the EmployeeDasboard GUI while passing it a socket object and string
+            }else{//if login info are incorrect
                 jLabel5.setText("*Invalid");
                 jLabel5.setVisible(true);
             }

@@ -58,11 +58,11 @@ CREATE TABLE `complaint` (
   `Complaint_id` varchar(20) NOT NULL,
   `Customer_id` varchar(8) NOT NULL,
   `Catergory` varchar(25) NOT NULL,
-  `Details` varchar(50) NOT NULL,
+  `Details` varchar(200) NOT NULL,
   `Employee_id` varchar(8) NOT NULL,
   `Status` varchar(25) NOT NULL,
   `Date` date NOT NULL,
-  `Instructions` varchar(75) NOT NULL
+  `Instructions` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------

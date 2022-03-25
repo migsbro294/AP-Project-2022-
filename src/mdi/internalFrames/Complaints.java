@@ -96,12 +96,16 @@ public class Complaints extends javax.swing.JInternalFrame {
         });
 
         jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
+       jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
+        jTextArea1.setLineWrap(true);
+        jTextArea1.setWrapStyleWord(true);
         jScrollPane4.setViewportView(jTextArea1);
 
         jTextAreaResponse.setColumns(20);
-        jTextAreaResponse.setRows(5);
+       jTextAreaResponse.setRows(5);
+        jTextAreaResponse.setLineWrap(true);
+        jTextAreaResponse.setWrapStyleWord(true);
         jScrollPane5.setViewportView(jTextAreaResponse);
 
         jScrollPane6.setViewportView(jListDetails);
@@ -141,6 +145,7 @@ public class Complaints extends javax.swing.JInternalFrame {
         ));
         jScrollPane8.setViewportView(jTable1);
 
+        jTable1.setEnabled(false);
         jLabel9.setText("Status");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "pending", "completed" }));
@@ -384,28 +389,34 @@ public class Complaints extends javax.swing.JInternalFrame {
 
     private void details(String comId){
         DefaultListModel model = new DefaultListModel();
-        client.sendOption(Options.GET_COMPLAINT2);
-        client.sendOneRequest(comId);
-        Complaint readAll= (Complaint) client.getResponse();
-        complaint_id=comId;
-        customer_id=readAll.getCustomer_id();
-        category=readAll.getCatergory();
-        details=readAll.getDetails();
-        jTextArea1.setText(readAll.getDetails());
-        jTextAreaResponse.setText(readAll.getInstructions());
+        try {
+            client.sendOption(Options.GET_COMPLAINT2);
+            client.sendOneRequest(comId);
+            Complaint readAll= (Complaint) client.getResponse();
+            complaint_id=comId;
+            customer_id=readAll.getCustomer_id();
+            category=readAll.getCatergory();
+            details=readAll.getDetails();
+            jTextArea1.setText(readAll.getDetails());
 
-        client.sendOption(Options.GET_CUSTOMER);
-        client.sendOneRequest(readAll.getCustomer_id());
-        Customer get= (Customer) client.getResponse();
+            if(!readAll.getInstructions().equals("0000")){
+                jTextAreaResponse.setText(readAll.getInstructions());
+            }
+            client.sendOption(Options.GET_CUSTOMER);
+            client.sendOneRequest(readAll.getCustomer_id());
+            Customer get= (Customer) client.getResponse();
 
-        model.addElement("ID: "+get.getCustomer_Id());
-        model.addElement("First Name: "+get.getFirstName());
-        model.addElement("Last Name: "+get.getLastname());
-        model.addElement("Email: "+get.getEmail());
-        model.addElement("Address: "+get.getAddress());
-        model.addElement("Phone: "+get.getContactNumber());
+            model.addElement("ID: "+get.getCustomer_Id());
+            model.addElement("First Name: "+get.getFirstName());
+            model.addElement("Last Name: "+get.getLastname());
+            model.addElement("Email: "+get.getEmail());
+            model.addElement("Address: "+get.getAddress());
+            model.addElement("Phone: "+get.getContactNumber());
 
-        jListDetails.setModel(model);
+            jListDetails.setModel(model);
+        }catch (NullPointerException e){
+            JOptionPane.showMessageDialog(null, "The Cell You select is Empty",
+                    " Cell Status", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
-
 }
