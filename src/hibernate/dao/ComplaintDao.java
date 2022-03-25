@@ -17,8 +17,9 @@ import org.apache.logging.log4j.Logger;
 
 public class ComplaintDao {
     private static final Logger logger = LogManager.getLogger(ComplaintDao.class);
-    public void createComplaint(String Complaint_id, String Customer_id, String Catergory, String Details, String Employee_id, String Status, Date date,String Instructions ) {
+    public boolean createComplaint(String Complaint_id, String Customer_id, String Catergory, String Details, String Employee_id, String Status, Date date,String Instructions ) {
         Transaction transaction = null;
+        boolean isCreated=false;
         try  {
             Complaint complaint = new Complaint();
             complaint.setComplaint_id(Complaint_id);
@@ -38,6 +39,7 @@ public class ComplaintDao {
 
             session.save(complaint);
             System.out.println("Inserted Successfully");
+            isCreated=true;
             transaction.commit();
             session.close();
         } catch (Exception e) {
@@ -48,6 +50,7 @@ public class ComplaintDao {
             }
             e.printStackTrace();
         }
+        return isCreated;
     }
 
 

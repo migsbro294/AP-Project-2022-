@@ -40,7 +40,15 @@ public class Complaint implements Serializable {
     public Complaint() {
     }
 
-    public Complaint(String complaintID, String customerID, String category, String details, String employeeID, String status, java.sql.Date date, String instruction) {
+    public Complaint(String complaint_id, String customer_id, String catergory, String details, String employee_id, String status, Date date, String instructions) {
+        this.Complaint_id = complaint_id;
+        this.Customer_id = customer_id;
+        this.Catergory = catergory;
+        this.Details = details;
+        this.Employee_id = employee_id;
+        this.Status = status;
+        this.date = date;
+        this.Instructions = instructions;
     }
 
     public String getComplaint_id() {

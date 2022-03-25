@@ -74,7 +74,7 @@ public class ComplaintController {
         int check=0;
         logger.info("Update Complaint");
         try {
-            updateSql = dbConn.prepareStatement("UPDATE complaint SET Complaint_id=?,Customer_id=?,Category=?, Details=?,Employee_id=?, Status=?, Date=?, Instructions=? where Complaint_id="+complaintID);
+            updateSql = dbConn.prepareStatement("UPDATE complaint SET Complaint_id=?,Customer_id=?,Catergory=?, Details=?,Employee_id=?, Status=?, Date=?, Instructions=? where Complaint_id="+complaintID);
             updateSql.setObject(1, complaintID);
             updateSql.setObject(2, customerID);
             updateSql.setObject(3, category);
@@ -99,7 +99,7 @@ public class ComplaintController {
         int check=0;
         logger.info("Delete Complaint");
         try {
-            deleteSql = dbConn.prepareStatement("DELETE FROM complaint WHERE Complaint_id ="+aNum);
+            deleteSql = dbConn.prepareStatement("DELETE FROM complaint WHERE Customer_id ="+aNum);
             check= deleteSql.executeUpdate();
         } catch (SQLException e) {
             logger.error("Error deleting complaint"+e.getMessage());
